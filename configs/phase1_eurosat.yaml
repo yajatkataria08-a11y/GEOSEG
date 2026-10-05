@@ -1,0 +1,26 @@
+# Phase 1 — EuroSAT Baseline Classifier
+# Goal: Validate environment, dataloaders, and training loop end-to-end.
+
+phase: 1
+
+dataset:
+  name: eurosat
+  root: data/eurosat
+  download: true
+
+model:
+  name: simple_cnn
+  in_channels: 13
+  num_classes: 10
+
+training:
+  epochs: 10
+  batch_size: 64
+  lr: 1.0e-3
+  optimizer: adam
+  loss: cross_entropy
+  num_workers: 0
+
+output:
+  checkpoint_dir: outputs/checkpoints/phase1
+  log_dir: outputs/tensorboard/phase1

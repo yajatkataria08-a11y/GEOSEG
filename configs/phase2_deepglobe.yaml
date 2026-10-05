@@ -1,0 +1,33 @@
+# Phase 2 — Enhanced U-Net Segmentation on DeepGlobe
+# Goal: Prove pixel-wise segmentation with mIoU > 0.45.
+# Data: Kaggle balraj98/deepglobe-land-cover-classification-dataset
+
+phase: 2
+
+dataset:
+  name: deepglobe
+  root: data/deepglobe
+  tile_size: 512
+  ignore_index: 6
+
+model:
+  name: unet
+  encoder: resnet34
+  encoder_weights: imagenet
+  in_channels: 3
+  num_classes: 7
+
+training:
+  epochs: 10
+  batch_size: 8
+  lr: 2.5e-4
+  optimizer: adamw
+  scheduler: cosine
+  loss: tversky_ce
+  amp: true
+  num_workers: 0
+  early_stopping_patience: 10
+
+output:
+  checkpoint_dir: outputs/checkpoints/phase2
+  log_dir: outputs/tensorboard/phase2

@@ -1,0 +1,49 @@
+# Phase 3 — Multispectral Segmentation (13 Sentinel-2 bands + spectral indices)
+# Goal: Prove that all 13 bands + NDVI/NDWI/NDBI improve over RGB-only segmentation.
+# Data: SEN12MS via torchgeo (13 Sentinel-2 bands + 11-class IGBP scheme)
+
+phase: 3
+
+dataset:
+  name: sen12ms
+  root: data/sen12ms
+  bands: s2-all         # 13 Sentinel-2 bands matching band_order
+  use_indices: true     # Append NDVI, NDWI, NDBI → 16 channels total
+  band_order:
+    - B01    # Coastal Aerosol
+    - B02    # Blue
+    - B03    # Green
+    - B04    # Red
+    - B05    # Red Edge 1
+    - B06    # Red Edge 2
+    - B07    # Red Edge 3
+    - B08    # NIR
+    - B8A    # Narrow NIR
+    - B09    # Water Vapor
+    - B10    # Cirrus
+    - B11    # SWIR 1
+    - B12    # SWIR 2
+
+model:
+  name: unet
+  encoder: resnet34
+  encoder_weights: imagenet
+  in_channels: 16       # 13 raw bands + 3 spectral indices (NDVI, NDWI, NDBI)
+  num_classes: 11       # SEN12MS IGBP simplified land cover scheme (0-10)
+  expand_pretrained: true
+
+training:
+  epochs: 15
+  batch_size: 8
+  lr: 1.0e-3
+  optimizer: adamw
+  loss: dice_ce
+  num_workers: 0
+  scheduler: cosine     # CosineAnnealingLR for smooth decay
+  amp: true             # Automatic Mixed Precision
+  gradient_accumulation_steps: 1
+  early_stopping_patience: 7
+
+output:
+  checkpoint_dir: outputs/checkpoints/phase3
+  log_dir: outputs/tensorboard/phase3

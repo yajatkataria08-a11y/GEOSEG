@@ -1,0 +1,73 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+*.so
+*.dll
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+*.egg
+*.zip
+*.tar.gz
+
+# Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+.tools/
+
+# Virtual environments
+.env
+.env.local
+.env/
+.venv/
+env/
+venv/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (large binary files)
+data/
+!data/aid/samples/
+!data/aid/samples/*.jpg
+
+# Outputs (generated predictions, checkpoints)
+outputs/
+!outputs/predictions/
+!outputs/predictions/*.png
+
+# Model weights
+*.ckpt
+*.pth
+*.pt
+*.bin
+
+# Geospatial raw rasters
+*.tif
+*.tiff
+*.shp
+*.dbf
+*.shx
+*.prj
+*.pdf
+
+# OS generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & temp
+*.log
+wandb/
+.pytest_cache/
