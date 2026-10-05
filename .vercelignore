@@ -1,0 +1,21 @@
+# Ignore Python backend & data from Vercel frontend builds
+api/
+backend/
+src/
+data/
+outputs/
+configs/
+scripts/
+tests/
+requirements.txt
+render-requirements.txt
+render.yaml
+*.py
+*.yaml
+*.yml
+*.pth
+*.pt
+*.bin
+*.tif
+*.tiff
+*.pdf
