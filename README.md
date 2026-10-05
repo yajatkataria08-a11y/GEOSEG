@@ -1,42 +1,33 @@
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<!--                           GEOSEG TOP HEADER BANNER                           -->
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,9,20,30&height=220&section=header&text=🛰️%20GeoSeg&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Satellite%20Land%20Cover%20Segmentation%20%26%20Progressive%20Super-Resolution%20(PSISR)&descAlignY=62&descSize=18" alt="GeoSeg Header Banner" width="100%">
-</p>
+<div align="center">
 
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<!--                              DYNAMIC TYPING SVG                              -->
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<p align="center">
-  <a href="https://github.com/yajatkataria08-a11y/GEOSEG">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=20&duration=3000&pause=800&color=38BDF8&center=true&vCenter=true&multiline=false&width=750&height=45&lines=Progressive+Satellite+Super-Resolution+(2x%2C+4x%2C+8x)+via+UBCF;Sentinel-2+L2A+13-Band+Multispectral+Semantic+Segmentation;AID+30-Scene+Aerial+Benchmark+Integration;AVX2%2FSIMD+Native+C%2B%2B20+Tiling+Acceleration+Engine;Published+in+Elsevier+Chemometrics+2025+(Sharma+et+al.)" alt="Typing SVG" />
-  </a>
-</p>
+# 🛰️ GeoSeg
 
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<!--                            GLOWING PILL BADGES                               -->
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<p align="center">
-  <img src="https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?style=flat&logo=pytorch&logoColor=white" alt="PyTorch" />
-  <img src="https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI" />
-  <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind" />
-  <img src="https://img.shields.io/badge/C%2B%2B-20_SIMD-00599C?style=flat&logo=c%2B%2B&logoColor=white" alt="C++20" />
-  <img src="https://img.shields.io/badge/Sentinel--2-L2A_10m-003366?style=flat&logo=esa&logoColor=white" alt="Sentinel-2" />
-  <img src="https://img.shields.io/badge/AID_Dataset-30_Classes-FF6F00?style=flat&logo=kaggle&logoColor=white" alt="AID Dataset" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat" alt="License" />
-</p>
+### Intelligent Satellite Land Cover Segmentation & Progressive Super-Resolution (PSISR)
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
+*An end-to-end Earth Observation & Geospatial AI platform combining 13-band Sentinel-2 L2A semantic segmentation, progressive 8× super-resolution via correlation filters, and native C++20 SIMD acceleration.*
 
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<!--                             TABLE OF CONTENTS                                -->
-<!-- ══════════════════════════════════════════════════════════════════════════════ -->
-<details open>
-<summary><b>📑 Table of Contents (Click to Collapse)</b></summary>
+<br/>
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=16&duration=2500&pause=1000&color=38BDF8&center=true&vCenter=true&width=680&lines=Cascading+Satellite+Super-Resolution+(2x%2C+4x%2C+8x)+via+UBCF;Sentinel-2+L2A+13-Band+Multispectral+Semantic+Segmentation;AID+30-Scene+Aerial+Benchmark+Integration;AVX2%2FSIMD+Native+C%2B%2B20+Tiling+Acceleration+Engine;Published+in+Elsevier+Chemometrics+2025+(Sharma+et+al.))](https://github.com/yajatkataria08-a11y/GEOSEG)
+
+<br/>
+
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?style=flat&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=black)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![C++20 SIMD](https://img.shields.io/badge/C%2B%2B-20_SIMD-00599C?style=flat&logo=c%2B%2B&logoColor=white)](https://isocpp.org/)
+[![Sentinel-2](https://img.shields.io/badge/Sentinel--2-L2A_10m-003366?style=flat&logo=esa&logoColor=white)](https://sentinels.copernicus.eu/)
+[![AID Dataset](https://img.shields.io/badge/AID_Dataset-30_Classes-FF6F00?style=flat&logo=kaggle&logoColor=white)](https://www.kaggle.com/datasets/jiayuanchengala/aid-scene-classification-datasets)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat)](https://opensource.org/licenses/MIT)
+
+<br/>
+
+</div>
+
+---
+
+## 📑 Table of Contents
 
 - [🌟 Executive Summary](#-executive-summary)
 - [🔬 Scientific & Algorithmic Foundation (Sharma et al. 2025)](#-scientific--algorithmic-foundation)
@@ -49,12 +40,6 @@
 - [🚀 Quickstart & Installation](#-quickstart--installation)
 - [🖥️ Interactive Web UI Showcase](#-interactive-web-ui-showcase)
 - [📜 Academic Citation](#-academic-citation)
-
-</details>
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
 
 ---
 
@@ -120,10 +105,6 @@ $$w_i = \frac{\mathcal{L}_{\text{MSE}}}{\mathcal{L}_{\text{MSE}} + \mathcal{L}_{
 - **FLOPs per Layer (Eq. 11)**: $2 \times K_h \times K_w \times C_{\text{in}} \times C_{\text{out}} \times H_{\text{out}} \times W_{\text{out}}$
 - **Model Efficiency (Eq. 12)**: $\eta = \frac{\text{Accuracy}}{\text{Total Parameters} + \text{FLOPs}}$
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
-
 ---
 
 ## 🛰️ Multispectral Sentinel-2 & AID Dataset Integration
@@ -161,10 +142,6 @@ GeoSeg features a production-grade native C++ core (`backend/`) demonstrating 7 
 | **Factory Pattern** | `backend/include/spectral_index.hpp` | Dynamic runtime creation via `createIndex(name)`. |
 
 *Execution Profile: **$4.8\times$ faster** than standard NumPy/Python sliding-window tiling.*
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
 
 ---
 
@@ -215,10 +192,6 @@ node ./node_modules/vite/bin/vite.js --port 5173
 ```
 *Open `http://localhost:5173` to access the full geospatial application.*
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
-</p>
-
 ---
 
 ## 🖥️ Interactive Web UI Showcase
@@ -258,6 +231,6 @@ If you use GeoSeg, the PSISR architecture, or the AID benchmark in your research
 }
 ```
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=0,2,9,20,30&height=120&section=footer" width="100%">
-</p>
+<div align="center">
+  <sub>Built with ❤️ for Earth Observation, Geospatial AI, and Remote Sensing Research.</sub>
+</div>
