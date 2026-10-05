@@ -1,6 +1,6 @@
 import { snakeToCamel, camelToSnake } from '../utils/caseTransform';
 
-const BASE_URL = '/api';
+const BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api';
 
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   try {

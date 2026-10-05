@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: geoseg-backend
+    env: python
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "pip install --upgrade pip && pip install -r render-requirements.txt"
+    startCommand: "uvicorn api.server:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: PORT
+        value: 10000
