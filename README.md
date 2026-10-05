@@ -18,14 +18,14 @@
 <!--                            GLOWING PILL BADGES                               -->
 <!-- ══════════════════════════════════════════════════════════════════════════════ -->
 <p align="center">
-  <img src="https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white" alt="PyTorch" />
-  <img src="https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind" />
-  <img src="https://img.shields.io/badge/C%2B%2B-20_SIMD-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++20" />
-  <img src="https://img.shields.io/badge/Sentinel--2-L2A_10m-003366?style=for-the-badge&logo=esa&logoColor=white" alt="Sentinel-2" />
-  <img src="https://img.shields.io/badge/AID_Dataset-30_Classes-FF6F00?style=for-the-badge&logo=kaggle&logoColor=white" alt="AID Dataset" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" alt="License" />
+  <img src="https://img.shields.io/badge/PyTorch-2.1%2B-EE4C2C?style=flat&logo=pytorch&logoColor=white" alt="PyTorch" />
+  <img src="https://img.shields.io/badge/FastAPI-0.100%2B-009688?style=flat&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/C%2B%2B-20_SIMD-00599C?style=flat&logo=c%2B%2B&logoColor=white" alt="C++20" />
+  <img src="https://img.shields.io/badge/Sentinel--2-L2A_10m-003366?style=flat&logo=esa&logoColor=white" alt="Sentinel-2" />
+  <img src="https://img.shields.io/badge/AID_Dataset-30_Classes-FF6F00?style=flat&logo=kaggle&logoColor=white" alt="AID Dataset" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat" alt="License" />
 </p>
 
 <p align="center">
