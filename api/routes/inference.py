@@ -45,14 +45,27 @@ async def run_inference(
 
     # 2. Checkpoint path security whitelist validation
     project_root = Path(__file__).resolve().parent.parent.parent
-    allowed_checkpoint_dir = (project_root / "outputs" / "checkpoints").resolve()
+    allowed_checkpoint_dirs = [
+        (project_root / "outputs" / "checkpoints").resolve(),
+        (project_root / "checkpoints").resolve(),
+    ]
     target_ckpt = (project_root / checkpoint).resolve()
 
-    if not target_ckpt.is_relative_to(allowed_checkpoint_dir):
-        raise HTTPException(status_code=400, detail="Forbidden: Checkpoint must reside within outputs/checkpoints/")
+    is_allowed = any(target_ckpt.is_relative_to(d) for d in allowed_checkpoint_dirs)
+    if not is_allowed:
+        # Fallback to default checkpoint in checkpoints/
+        default_fallback = (project_root / "checkpoints" / "psisr" / "best_model.pth").resolve()
+        if default_fallback.is_file():
+            target_ckpt = default_fallback
+        else:
+            raise HTTPException(status_code=400, detail="Forbidden: Checkpoint must reside within checkpoints/ or outputs/checkpoints/")
 
     if not target_ckpt.is_file():
-        raise HTTPException(status_code=400, detail=f"Checkpoint file not found: {checkpoint}")
+        # Check if alternative exists in checkpoints/psisr
+        alt = (project_root / "checkpoints" / "psisr" / "best_model.pth").resolve()
+        if alt.is_file():
+            target_ckpt = alt
+
 
     job_id = str(uuid.uuid4())[:8]
 

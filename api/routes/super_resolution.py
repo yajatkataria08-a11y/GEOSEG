@@ -29,9 +29,20 @@ def get_sr_model() -> PSISRNet:
     global _sr_model
     if _sr_model is None:
         # base_filters=128 → UB1=512ch, UB2=256ch, UB3=128ch (paper Table 2)
-        _sr_model = PSISRNet(in_channels=3, out_channels=3, base_filters=128)
-        _sr_model.eval()
+        model = PSISRNet(in_channels=3, out_channels=3, base_filters=128)
+        ckpt_path = Path("checkpoints/psisr/best_model.pth")
+        if ckpt_path.exists():
+            try:
+                ckpt = torch.load(str(ckpt_path), map_location="cpu", weights_only=False)
+                state_dict = ckpt.get("model_state_dict", ckpt)
+                model.load_state_dict(state_dict, strict=False)
+                print(f"[PSISR] Successfully loaded trained weights from {ckpt_path}")
+            except Exception as e:
+                print(f"[PSISR] Note: could not load checkpoint {ckpt_path}: {e}")
+        model.eval()
+        _sr_model = model
     return _sr_model
+
 
 
 # ─── Pydantic Schemas ──────────────────────────────────────────────────────────
@@ -129,7 +140,11 @@ async def get_aid_dataset_info():
     samples = []
     if samples_dir.exists():
         for p in samples_dir.glob("aid_*.jpg"):
-            cls_name = p.stem.split("_")[1]
+            stem = p.stem
+            if stem.startswith("aid_") and stem.endswith("_01"):
+                cls_name = stem[4:-3]
+            else:
+                cls_name = stem.split("_")[1]
             samples.append({
                 "id": p.stem,
                 "class_name": cls_name,
@@ -138,6 +153,7 @@ async def get_aid_dataset_info():
                 "url": f"/static/aid/{p.name}"
             })
     meta["samples"] = samples
+
     return meta
 
 

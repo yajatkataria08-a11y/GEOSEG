@@ -213,21 +213,23 @@ async def get_satellite(result_id: str):
 
 @router.get("/checkpoints")
 async def list_checkpoints():
-    """List all saved model checkpoints."""
+    """List all saved model checkpoints across outputs/checkpoints and checkpoints/."""
     checkpoints = []
-    ckpt_path = CHECKPOINT_DIR
+    ckpt_dirs = [CHECKPOINT_DIR, project_root / "checkpoints"]
 
-    if ckpt_path.exists():
-        for phase_dir in sorted(ckpt_path.iterdir()):
-            if phase_dir.is_dir():
-                for ckpt_file in phase_dir.glob("*.pth"):
-                    stat = ckpt_file.stat()
-                    checkpoints.append({
-                        "name": ckpt_file.name,
-                        "phase": phase_dir.name,
-                        "path": str(ckpt_file),
-                        "size_mb": round(stat.st_size / 1024 / 1024, 2),
-                        "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
-                    })
+    for c_dir in ckpt_dirs:
+        if c_dir.exists():
+            for phase_dir in sorted(c_dir.iterdir()):
+                if phase_dir.is_dir():
+                    for ckpt_file in phase_dir.glob("*.pth"):
+                        stat = ckpt_file.stat()
+                        checkpoints.append({
+                            "name": ckpt_file.name,
+                            "phase": phase_dir.name,
+                            "path": str(ckpt_file.relative_to(project_root)).replace("\\", "/"),
+                            "size_mb": round(stat.st_size / 1024 / 1024, 2),
+                            "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                        })
 
     return {"checkpoints": checkpoints, "total": len(checkpoints)}
+
