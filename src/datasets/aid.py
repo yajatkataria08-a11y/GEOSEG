@@ -8,13 +8,14 @@ Data Availability Statement: https://www.kaggle.com/datasets/jiayuanchengala/aid
 """
 
 import os
+import random
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Union
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw
 import torch
-from torch.utils.data import Dataset
-import torchvision.transforms as T
+from torch.utils.data import Dataset, DataLoader
+import torchvision.transforms.functional as TF
 
 # The 30 official semantic scene classes of AID dataset
 AID_CLASSES = [
@@ -25,6 +26,22 @@ AID_CLASSES = [
     "port", "railway_station", "resort", "river", "school", 
     "sparse_residential", "square", "stadium", "storage_tanks", "viaduct"
 ]
+
+# Normalization mapping to normalize class folder names (e.g., 'BareLand' -> 'bare_land')
+def normalize_class_name(name: str) -> str:
+    cleaned = name.strip().lower().replace("-", "_").replace(" ", "_")
+    # Mapping for PascalCase folder names common in AID dataset downloads
+    alt_map = {
+        "bareland": "bare_land",
+        "baseballfield": "baseball_field",
+        "denseresidential": "dense_residential",
+        "mediumresidential": "medium_residential",
+        "railwaystation": "railway_station",
+        "sparseresidential": "sparse_residential",
+        "storagetanks": "storage_tanks",
+    }
+    return alt_map.get(cleaned, cleaned)
+
 
 AID_CLASS_DESCRIPTIONS = {
     "airport": "Runways, taxiways, and airport terminals with high structural contrast",
@@ -59,7 +76,6 @@ AID_CLASS_DESCRIPTIONS = {
     "viaduct": "Multi-span elevated highway and railway viaducts crossing valleys"
 }
 
-# Color palette mapped to AID classes for visualization
 AID_CLASS_COLORS = {
     "airport": "#64748b", "bare_land": "#d97706", "baseball_field": "#10b981",
     "beach": "#fef08a", "bridge": "#94a3b8", "center": "#6366f1",
@@ -78,8 +94,12 @@ class AIDDataset(Dataset):
     """
     PyTorch Dataset for AID (Aerial Image Dataset) Scene Classification
     and Progressive Satellite Image Super-Resolution (PSISR).
-    Provides LR (low-resolution) and HR (high-resolution) image pairs
-    at 2x, 4x, and 8x scale factors as required by the PSISR model.
+    
+    Implements exact data pipeline from Sharma et al. (2025):
+    - LR/HR image pairs built with bicubic downsampling (Eq. 1 & Sec 3.3).
+    - 64x64 LR patches extracted for training (Sec 3.3).
+    - Data augmentations: horizontal & vertical flips, 90-degree rotations (Sec 3.3).
+    - Progressive multi-scale supervision (2x, 4x, 8x).
     """
     def __init__(
         self,
@@ -87,34 +107,106 @@ class AIDDataset(Dataset):
         split: str = "train",
         scale_factor: int = 4,
         patch_size: int = 64,
-        transform=None,
+        split_ratio: float = 0.8,
+        seed: int = 42,
+        progressive: bool = True,
     ):
         self.root_dir = Path(root_dir)
         self.split = split
         self.scale_factor = scale_factor
         self.patch_size = patch_size
-        self.transform = transform
-        self.samples = []
+        self.split_ratio = split_ratio
+        self.seed = seed
+        self.progressive = progressive
+        self.samples: List[Tuple[str, int, str]] = []
         
-        self._ensure_dataset_exists()
-        self._load_samples()
+        self._find_and_load_samples()
 
-    def _ensure_dataset_exists(self):
-        """Ensures the AID dataset directory and reference sample scenes exist."""
-        self.root_dir.mkdir(parents=True, exist_ok=True)
-        samples_dir = self.root_dir / "samples"
-        samples_dir.mkdir(parents=True, exist_ok=True)
+    def _find_candidate_dirs(self) -> List[Path]:
+        """Locates candidate directories containing AID images."""
+        candidates = [
+            self.root_dir / "AID",
+            self.root_dir,
+            Path.home() / ".cache" / "kagglehub" / "datasets" / "jiayuanchengala" / "aid-scene-classification-datasets",
+        ]
+        # Also check versions subdirectories in kagglehub cache
+        cache_base = Path.home() / ".cache" / "kagglehub" / "datasets" / "jiayuanchengala" / "aid-scene-classification-datasets"
+        if cache_base.exists():
+            for v in cache_base.glob("**/AID"):
+                if v.is_dir() and v not in candidates:
+                    candidates.insert(0, v)
+            for v in cache_base.glob("versions/*"):
+                if v.is_dir() and v not in candidates:
+                    candidates.insert(0, v)
+        return candidates
+
+    def _find_and_load_samples(self):
+        """Scans for AID images across known paths and partitions into train/val split."""
+        all_files: List[Tuple[str, int, str]] = []
+        found_dir = None
+
+        for cand in self._find_candidate_dirs():
+            if not cand.exists():
+                continue
+            
+            # Check for class subdirectories
+            subdirs = [d for d in cand.iterdir() if d.is_dir() and d.name != "samples"]
+            if len(subdirs) >= 15:
+                found_dir = cand
+                for d in subdirs:
+                    norm_cls = normalize_class_name(d.name)
+                    cls_idx = AID_CLASSES.index(norm_cls) if norm_cls in AID_CLASSES else -1
+                    if cls_idx == -1:
+                        continue
+                    for img_p in d.glob("*.[jJ][pP][gG]"):
+                        all_files.append((str(img_p), cls_idx, norm_cls))
+                if all_files:
+                    break
+
+        # Fallback to samples directory if full dataset is not yet found
+        if not all_files:
+            samples_dir = self.root_dir / "samples"
+            samples_dir.mkdir(parents=True, exist_ok=True)
+            existing = list(samples_dir.glob("aid_*.jpg"))
+            if len(existing) < 12:
+                self._generate_reference_samples(samples_dir)
+                existing = list(samples_dir.glob("aid_*.jpg"))
+            for p in existing:
+                cls_name = p.stem.split("_")[1]
+                cls_idx = AID_CLASSES.index(cls_name) if cls_name in AID_CLASSES else 0
+                all_files.append((str(p), cls_idx, cls_name))
+
+        # Deterministic split per class
+        random.seed(self.seed)
+        all_files.sort(key=lambda x: x[0])  # ensure stable sort
         
-        # Check if samples already exist
-        existing = list(samples_dir.glob("*.jpg")) + list(samples_dir.glob("*.png"))
-        if len(existing) < 15:
-            self._generate_reference_samples(samples_dir)
+        # Group by class to guarantee stratified split
+        class_to_files: Dict[int, List[Tuple[str, int, str]]] = {}
+        for item in all_files:
+            class_to_files.setdefault(item[1], []).append(item)
+
+        train_samples = []
+        val_samples = []
+        for c_idx, items in class_to_files.items():
+            random.Random(self.seed + c_idx).shuffle(items)
+            n_train = int(len(items) * self.split_ratio)
+            # If dataset is small sample fallback, ensure at least some images in each
+            if len(items) <= 2:
+                train_samples.extend(items)
+                val_samples.extend(items)
+            else:
+                train_samples.extend(items[:n_train])
+                val_samples.extend(items[n_train:])
+
+        if self.split == "train":
+            self.samples = train_samples
+        elif self.split in ["val", "test"]:
+            self.samples = val_samples
+        else:
+            self.samples = all_files
 
     def _generate_reference_samples(self, out_dir: Path):
-        """
-        Generates realistic high-resolution reference aerial scene tiles
-        for the benchmark classes if full dataset is not yet downloaded.
-        """
+        """Generates realistic reference scene tiles if full dataset is not yet available."""
         key_classes = [
             ("airport", (60, 65, 75), (200, 200, 210)),
             ("farmland", (90, 140, 50), (180, 160, 60)),
@@ -129,83 +221,86 @@ class AIDDataset(Dataset):
             ("bridge", (35, 95, 160), (160, 165, 170)),
             ("parking", (70, 75, 80), (230, 230, 230)),
         ]
-        
         for name, bg_col, fg_col in key_classes:
             img = Image.new("RGB", (600, 600), color=bg_col)
             draw = ImageDraw.Draw(img)
-            
-            # Procedural aerial scene structure
             if name == "airport":
                 draw.rectangle([100, 0, 180, 600], fill=fg_col)
                 draw.rectangle([350, 0, 430, 600], fill=fg_col)
-                for y in range(20, 580, 40):
-                    draw.rectangle([135, y, 145, y + 20], fill=(255, 255, 255))
-                    draw.rectangle([385, y, 395, y + 20], fill=(255, 255, 255))
-            elif name == "farmland":
-                for x in range(0, 600, 75):
-                    for y in range(0, 600, 75):
-                        c = (bg_col[0] + (x % 30), bg_col[1] + (y % 40), bg_col[2] + ((x + y) % 25))
-                        draw.rectangle([x, y, x + 70, y + 70], fill=c)
             elif name == "river":
-                points = [(0, 200), (150, 280), (320, 240), (450, 380), (600, 320),
-                          (600, 440), (450, 500), (320, 360), (150, 400), (0, 320)]
-                draw.polygon(points, fill=bg_col)
-                draw.rectangle([0, 0, 600, 200], fill=fg_col)
-            elif name == "dense_residential":
-                for x in range(20, 580, 45):
-                    for y in range(20, 580, 45):
-                        draw.rectangle([x, y, x + 35, y + 35], fill=fg_col)
-                        draw.rectangle([x + 5, y + 5, x + 30, y + 30], fill=(200, 60, 60))
-            elif name == "bridge":
-                draw.rectangle([0, 0, 600, 600], fill=(30, 90, 160))
-                draw.rectangle([250, 0, 350, 600], fill=fg_col)
-                for y in range(0, 600, 30):
-                    draw.line([(250, y), (350, y)], fill=(255, 255, 255), width=2)
+                draw.polygon([(0, 200), (300, 260), (600, 320), (600, 450), (300, 380), (0, 320)], fill=bg_col)
             else:
-                for _ in range(30):
+                for _ in range(25):
                     x1 = np.random.randint(0, 500)
                     y1 = np.random.randint(0, 500)
-                    w = np.random.randint(40, 120)
-                    h = np.random.randint(40, 120)
-                    draw.rectangle([x1, y1, x1 + w, y1 + h], fill=fg_col)
-            
-            # Save 600x600 reference
+                    draw.rectangle([x1, y1, x1 + 80, y1 + 80], fill=fg_col)
             img.save(out_dir / f"aid_{name}_01.jpg", quality=95)
-
-    def _load_samples(self):
-        samples_dir = self.root_dir / "samples"
-        for p in samples_dir.glob("aid_*.jpg"):
-            cls_name = p.stem.split("_")[1]
-            cls_idx = AID_CLASSES.index(cls_name) if cls_name in AID_CLASSES else 0
-            self.samples.append((str(p), cls_idx, cls_name))
 
     def __len__(self) -> int:
         return len(self.samples)
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
         path, cls_idx, cls_name = self.samples[idx]
-        hr_img = Image.open(path).convert("RGB")
-        
-        # Crop or resize to standard patch size for super-resolution
-        hr_w, hr_h = hr_img.size
-        target_hr_size = self.patch_size * self.scale_factor
-        hr_img = hr_img.resize((target_hr_size, target_hr_size), Image.Resampling.BICUBIC)
-        
-        # Bicubic downsampling to produce the low-resolution input (per Section 3.3)
-        lr_size = self.patch_size
-        lr_img = hr_img.resize((lr_size, lr_size), Image.Resampling.BICUBIC)
-        
-        hr_tensor = T.ToTensor()(hr_img)
-        lr_tensor = T.ToTensor()(lr_img)
-        
-        return {
+        hr_full = Image.open(path).convert("RGB")
+        w, h = hr_full.size
+
+        # In paper Sec 3.3: 64x64 LR patches extracted for training.
+        # Max scale factor is 8x -> HR patch needs to be 64 * 8 = 512x512
+        max_scale = 8 if self.progressive else self.scale_factor
+        hr_patch_size = self.patch_size * max_scale
+
+        if self.split == "train":
+            # Extract random crop of size (patch_size * max_scale)
+            if w >= hr_patch_size and h >= hr_patch_size:
+                x = random.randint(0, w - hr_patch_size)
+                y = random.randint(0, h - hr_patch_size)
+                hr_patch = hr_full.crop((x, y, x + hr_patch_size, y + hr_patch_size))
+            else:
+                hr_patch = hr_full.resize((hr_patch_size, hr_patch_size), Image.Resampling.BICUBIC)
+
+            # Data Augmentation per Section 3.3: horizontal flip, vertical flip, 90-deg rotations
+            if random.random() > 0.5:
+                hr_patch = TF.hflip(hr_patch)
+            if random.random() > 0.5:
+                hr_patch = TF.vflip(hr_patch)
+            angle = random.choice([0, 90, 180, 270])
+            if angle != 0:
+                hr_patch = TF.rotate(hr_patch, angle)
+        else:
+            # Deterministic center crop or resize for evaluation
+            if w >= hr_patch_size and h >= hr_patch_size:
+                x = (w - hr_patch_size) // 2
+                y = (h - hr_patch_size) // 2
+                hr_patch = hr_full.crop((x, y, x + hr_patch_size, y + hr_patch_size))
+            else:
+                hr_patch = hr_full.resize((hr_patch_size, hr_patch_size), Image.Resampling.BICUBIC)
+
+        # Downsample using bicubic interpolation to create LR input (Sec 3.3)
+        lr_img = hr_patch.resize((self.patch_size, self.patch_size), Image.Resampling.BICUBIC)
+        lr_tensor = TF.to_tensor(lr_img)
+
+        result = {
             "lr": lr_tensor,
-            "hr": hr_tensor,
             "class_idx": cls_idx,
             "class_name": cls_name,
-            "scale": self.scale_factor,
             "path": path,
         }
+
+        if self.progressive:
+            # Generate ground-truth for all 3 progressive stages: 2x (128), 4x (256), 8x (512)
+            hr_2x_img = hr_patch.resize((self.patch_size * 2, self.patch_size * 2), Image.Resampling.BICUBIC)
+            hr_4x_img = hr_patch.resize((self.patch_size * 4, self.patch_size * 4), Image.Resampling.BICUBIC)
+            hr_8x_img = hr_patch  # already patch_size * 8
+            result["hr_2x"] = TF.to_tensor(hr_2x_img)
+            result["hr_4x"] = TF.to_tensor(hr_4x_img)
+            result["hr_8x"] = TF.to_tensor(hr_8x_img)
+            result["hr"] = result[f"hr_{self.scale_factor}x"]
+        else:
+            target_size = self.patch_size * self.scale_factor
+            hr_target = hr_patch.resize((target_size, target_size), Image.Resampling.BICUBIC)
+            result["hr"] = TF.to_tensor(hr_target)
+
+        return result
 
     @staticmethod
     def get_dataset_metadata() -> Dict:
@@ -228,3 +323,37 @@ class AIDDataset(Dataset):
             "psnr_gain_vs_sota": "+0.4 dB",
             "ssim_gain_vs_sota": "+0.003",
         }
+
+
+def get_aid_dataloaders(
+    root_dir: str = "data/aid",
+    batch_size: int = 8,
+    scale_factor: int = 4,
+    patch_size: int = 64,
+    num_workers: int = 0,
+    split_ratio: float = 0.8,
+) -> Tuple[DataLoader, DataLoader]:
+    """
+    Creates train and validation DataLoader instances for the AID dataset.
+    """
+    train_ds = AIDDataset(
+        root_dir=root_dir,
+        split="train",
+        scale_factor=scale_factor,
+        patch_size=patch_size,
+        split_ratio=split_ratio,
+    )
+    val_ds = AIDDataset(
+        root_dir=root_dir,
+        split="val",
+        scale_factor=scale_factor,
+        patch_size=patch_size,
+        split_ratio=split_ratio,
+    )
+    train_loader = DataLoader(
+        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=torch.cuda.is_available()
+    )
+    val_loader = DataLoader(
+        val_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers, pin_memory=torch.cuda.is_available()
+    )
+    return train_loader, val_loader

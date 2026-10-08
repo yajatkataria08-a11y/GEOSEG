@@ -11,7 +11,9 @@ import torch
 import torch.nn as nn
 
 
-def expand_first_conv(model: nn.Module, new_in_channels: int = 13) -> nn.Module:
+def expand_first_conv(model: nn.Module, new_in_channels: int = 13, in_channels: int = None) -> nn.Module:
+    if in_channels is not None:
+        new_in_channels = in_channels
     """
     Expand the first convolutional layer of a pretrained encoder from 3 to N channels.
 

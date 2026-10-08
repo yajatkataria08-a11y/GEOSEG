@@ -28,7 +28,8 @@ _sr_model: Optional[PSISRNet] = None
 def get_sr_model() -> PSISRNet:
     global _sr_model
     if _sr_model is None:
-        _sr_model = PSISRNet(in_channels=3, out_channels=3)
+        # base_filters=128 → UB1=512ch, UB2=256ch, UB3=128ch (paper Table 2)
+        _sr_model = PSISRNet(in_channels=3, out_channels=3, base_filters=128)
         _sr_model.eval()
     return _sr_model
 
@@ -262,12 +263,8 @@ async def run_psisr_upscale(req: UpscaleRequest):
     sr_path = out_dir / f"{req.image_id}_sr_{scale}x.png"
     sr_pil.save(sr_path)
     
-    # Quantitative metrics
-    metrics = calculate_metrics(sr_tensor.squeeze(0), hr_tensor.squeeze(0))
-    # Add authentic PSISR performance offset matching paper results
-    metrics["psnr"] = round(max(metrics["psnr"], 30.38 if scale == 4 else (35.85 if scale == 2 else 26.58)), 2)
-    metrics["ssim"] = round(max(metrics["ssim"], 0.8465 if scale == 4 else (0.9488 if scale == 2 else 0.7410)), 4)
-    metrics["correlation_efficiency"] = 99.25
+    # Quantitative metrics evaluated on Y-channel (per paper Section 3.3)
+    metrics = calculate_metrics(sr_tensor.squeeze(0), hr_tensor.squeeze(0), use_y_channel=True)
     
     params_count = sum(p.numel() for p in model.parameters())
     # FLOPs formula from Equation 11
