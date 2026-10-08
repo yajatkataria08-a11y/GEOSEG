@@ -201,14 +201,13 @@ async def get_sota_benchmarks():
                 "params_m": 11.2, "correlation_pct": 97.9
             },
             {
-                "method": "PSISR (Proposed - Sharma et al. 2025)",
-                "psnr_2x": 35.85, "ssim_2x": 0.9488,
-                "psnr_4x": 30.38, "ssim_4x": 0.8465,
-                "psnr_8x": 26.58, "ssim_8x": 0.7410,
-                "params_m": 8.4, "correlation_pct": 99.25,
+                "method": "PSISR (Sharma et al. 2025 Published)",
+                "psnr_2x": 38.47, "ssim_2x": 0.9592,
+                "psnr_4x": 31.41, "ssim_4x": 0.8275,
+                "psnr_8x": 27.03, "ssim_8x": 0.6458,
+                "params_m": 21.89,
                 "is_proposed": True,
-                "gain_psnr": "+0.40 dB",
-                "gain_ssim": "+0.0030"
+                "gain_psnr": "+3.02 dB over RCAN (2x)"
             }
         ]
     }
