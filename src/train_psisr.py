@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument("--smoke-test", action="store_true", help="Run a 1-epoch smoke test with few batches")
     parser.add_argument("--max-steps", type=int, default=None, help="Max steps per epoch")
     parser.add_argument("--device", type=str, default=None, help="cuda or cpu")
+    parser.add_argument("--resume", action="store_true", help="Resume from checkpoint in save-dir if available")
     parser.add_argument("--save-dir", type=str, default="checkpoints/psisr", help="Checkpoint directory")
     return parser.parse_args()
 
@@ -66,6 +67,7 @@ def train_one_epoch(
     device: torch.device,
     epoch: int,
     max_steps: int = None,
+    scaler = None,
 ) -> Dict[str, float]:
     model.train()
     total_loss = 0.0
@@ -73,6 +75,7 @@ def train_one_epoch(
     loss_4x_sum = 0.0
     loss_8x_sum = 0.0
     steps = 0
+    use_amp = (device.type == "cuda")
 
     pbar = tqdm(train_loader, desc=f"Epoch {epoch} [Train]", leave=False)
     for batch_idx, batch in enumerate(pbar):
@@ -87,21 +90,26 @@ def train_one_epoch(
 
         optimizer.zero_grad()
 
-        # Forward pass producing progressive outputs at 2x, 4x, 8x
-        outputs = model(lr, scale=8)
-        out_2x = outputs["sr_2x"]
-        out_4x = outputs["sr_4x"]
-        out_8x = outputs["sr_8x"]
+        # Forward pass with Automatic Mixed Precision (AMP)
+        with torch.amp.autocast(device_type=device.type, enabled=use_amp):
+            outputs = model(lr, scale=8)
+            out_2x = outputs["sr_2x"]
+            out_4x = outputs["sr_4x"]
+            out_8x = outputs["sr_8x"]
 
-        # Adaptive Combined Loss at each cascading stage (Eq. 7-8)
-        loss_2x, _, _ = loss_fn(out_2x, hr_2x)
-        loss_4x, _, _ = loss_fn(out_4x, hr_4x)
-        loss_8x, _, _ = loss_fn(out_8x, hr_8x)
+            # Adaptive Combined Loss at each cascading stage (Eq. 7-8)
+            loss_2x, _, _ = loss_fn(out_2x, hr_2x)
+            loss_4x, _, _ = loss_fn(out_4x, hr_4x)
+            loss_8x, _, _ = loss_fn(out_8x, hr_8x)
+            loss = loss_2x + loss_4x + loss_8x
 
-        # Multi-stage combined objective
-        loss = loss_2x + loss_4x + loss_8x
-        loss.backward()
-        optimizer.step()
+        if scaler and use_amp:
+            scaler.scale(loss).backward()
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            loss.backward()
+            optimizer.step()
 
         total_loss += loss.item()
         loss_2x_sum += loss_2x.item()
@@ -110,11 +118,12 @@ def train_one_epoch(
         steps += 1
         step_dt = time.time() - step_t0
 
-        print(
-            f"  [Step {steps}/{max_steps or len(train_loader)}] in {step_dt:.1f}s | "
-            f"Total Loss: {loss.item():.4f} (2x: {loss_2x.item():.4f}, 4x: {loss_4x.item():.4f}, 8x: {loss_8x.item():.4f})",
-            flush=True,
-        )
+        if steps % 5 == 0 or steps <= 5 or (max_steps and steps == max_steps):
+            print(
+                f"  Epoch {epoch} [Step {steps}/{max_steps or len(train_loader)}] in {step_dt:.2f}s | "
+                f"Loss: {loss.item():.4f} (2x: {loss_2x.item():.4f}, 4x: {loss_4x.item():.4f}, 8x: {loss_8x.item():.4f})",
+                flush=True,
+            )
 
     return {
         "loss": total_loss / max(1, steps),
@@ -136,6 +145,7 @@ def evaluate(
     psnr_4x_sum, ssim_4x_sum = 0.0, 0.0
     psnr_8x_sum, ssim_8x_sum = 0.0, 0.0
     count = 0
+    use_amp = (device.type == "cuda")
 
     pbar = tqdm(val_loader, desc="[Validation]", leave=False)
     for batch_idx, batch in enumerate(pbar):
@@ -147,10 +157,11 @@ def evaluate(
         hr_4x = batch["hr_4x"].to(device)
         hr_8x = batch["hr_8x"].to(device)
 
-        outputs = model(lr, scale=8)
-        out_2x = outputs["sr_2x"]
-        out_4x = outputs["sr_4x"]
-        out_8x = outputs["sr_8x"]
+        with torch.amp.autocast(device_type=device.type, enabled=use_amp):
+            outputs = model(lr, scale=8)
+            out_2x = outputs["sr_2x"]
+            out_4x = outputs["sr_4x"]
+            out_8x = outputs["sr_8x"]
 
         # Calculate metrics for each batch sample on Y channel (per Section 3.3)
         b_size = lr.size(0)
@@ -230,10 +241,24 @@ def main():
     scheduler = StepLR(optimizer, step_size=train_cfg.get("lr_step_size", 100), gamma=train_cfg.get("lr_gamma", 0.1))
 
     best_psnr_8x = -1.0
+    start_epoch = 1
+    ckpt_path = save_dir / "best_model.pth"
+    if args.resume and ckpt_path.exists():
+        ckpt = torch.load(ckpt_path, map_location=device, weights_only=False)
+        model.load_state_dict(ckpt["model_state_dict"])
+        if "optimizer_state_dict" in ckpt:
+            try:
+                optimizer.load_state_dict(ckpt["optimizer_state_dict"])
+            except Exception:
+                pass
+        start_epoch = ckpt.get("epoch", 0) + 1
+        best_psnr_8x = ckpt.get("metrics", {}).get("psnr_8x", -1.0)
+        print(f"Resumed from checkpoint: {ckpt_path} (Starting at Epoch {start_epoch}, Prior Best 8x: {best_psnr_8x:.2f} dB)", flush=True)
+
     max_steps = args.max_steps if args.max_steps is not None else (3 if args.smoke_test else None)
 
     start_time = time.time()
-    for epoch in range(1, epochs + 1):
+    for epoch in range(start_epoch, epochs + 1):
         epoch_start = time.time()
 
         train_metrics = train_one_epoch(
@@ -244,11 +269,12 @@ def main():
 
         elapsed = time.time() - epoch_start
         print(
-            f"Epoch {epoch:03d}/{epochs:03d} [{elapsed:.1f}s] - "
+            f"\n>>> Epoch {epoch:03d}/{epochs:03d} [{elapsed:.1f}s] Complete! "
             f"Loss: {train_metrics['loss']:.4f} | "
             f"2x: {val_metrics['psnr_2x']:.2f}dB / {val_metrics['ssim_2x']:.4f} | "
             f"4x: {val_metrics['psnr_4x']:.2f}dB / {val_metrics['ssim_4x']:.4f} | "
-            f"8x: {val_metrics['psnr_8x']:.2f}dB / {val_metrics['ssim_8x']:.4f}"
+            f"8x: {val_metrics['psnr_8x']:.2f}dB / {val_metrics['ssim_8x']:.4f}\n",
+            flush=True,
         )
 
         # Save best checkpoint based on 8x PSNR
@@ -261,6 +287,7 @@ def main():
                 "optimizer_state_dict": optimizer.state_dict(),
                 "metrics": val_metrics,
             }, ckpt_path)
+            print(f"  [Checkpoint Saved] -> {ckpt_path} (Best 8x PSNR: {best_psnr_8x:.2f} dB)\n", flush=True)
 
     total_time = time.time() - start_time
     print("\n" + "=" * 60)
