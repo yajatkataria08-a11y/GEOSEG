@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 330">
+  <defs>
+    <style>
+      @keyframes pulseEq { 0%,100%{stroke-opacity:.4} 50%{stroke-opacity:1} }
+      @keyframes fillBar  { from{width:0} to{width:var(--bar-w)} }
+      @keyframes flowMath { 0%{stroke-dashoffset:60} 100%{stroke-dashoffset:0} }
+    </style>
+    <linearGradient id="ndviG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#15803d"/><stop offset="100%" stop-color="#4ade80"/></linearGradient>
+    <linearGradient id="ndwiG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#0284c7"/><stop offset="100%" stop-color="#38bdf8"/></linearGradient>
+    <linearGradient id="ndbiG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#b45309"/><stop offset="100%" stop-color="#fbbf24"/></linearGradient>
+  </defs>
+
+  <rect width="860" height="330" fill="#0b0f19" rx="12" stroke="#1e293b" stroke-width="1.5"/>
+
+  <text x="430" y="24" text-anchor="middle" font-family="'Fira Code', monospace" font-size="11.5" fill="#94a3b8" font-weight="bold">
+    📐 MATHEMATICAL FORMULATIONS OF MULTISPECTRAL PHYSICAL INDICES (CHANNELS 14–16)
+  </text>
+
+  <!-- INDEX 1: NDVI (Vegetation) -->
+  <g transform="translate(25, 45)" font-family="monospace">
+    <rect width="250" height="235" rx="10" fill="#052e16" stroke="#22c55e" stroke-width="1.4" style="animation:pulseEq 3s infinite"/>
+    <rect width="250" height="4" rx="2" fill="#22c55e"/>
+
+    <text x="125" y="28" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold">NDVI (Channel 14)</text>
+    <text x="125" y="44" text-anchor="middle" fill="#86efac" font-size="8">Normalized Difference Vegetation</text>
+
+    <!-- Formula Box -->
+    <rect x="15" y="55" width="220" height="52" rx="6" fill="#021a0c" stroke="#15803d" stroke-width="1"/>
+    <text x="125" y="76" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">NDVI = (B8 - B4) / (B8 + B4)</text>
+    <text x="125" y="96" text-anchor="middle" fill="#94a3b8" font-size="8.5">B8 (NIR: 842nm) · B4 (Red: 665nm)</text>
+
+    <!-- Description -->
+    <text x="20" y="128" fill="#86efac" font-size="8.5" font-weight="bold">Physical Principle:</text>
+    <text x="20" y="144" fill="#cbd5e1" font-size="7.8">Healthy mesophyll cells bounce NIR</text>
+    <text x="20" y="157" fill="#cbd5e1" font-size="7.8">while chlorophyll absorbs red light.</text>
+
+    <!-- Range meter -->
+    <rect x="20" y="172" width="210" height="12" rx="6" fill="#1e293b"/>
+    <rect x="125" y="172" width="105" height="12" rx="6" fill="url(#ndviG)"/>
+    <text x="20" y="196" fill="#64748b" font-size="7.5">-1.0 (Water)</text>
+    <text x="110" y="196" fill="#94a3b8" font-size="7.5">0.0 (Soil)</text>
+    <text x="180" y="196" fill="#4ade80" font-size="7.5" font-weight="bold">+1.0 (Forest)</text>
+
+    <text x="125" y="222" text-anchor="middle" fill="#22c55e" font-size="8" font-weight="bold">Identifies: Canopy &amp; Crop Health</text>
+  </g>
+
+  <!-- INDEX 2: NDWI (Water) -->
+  <g transform="translate(305, 45)" font-family="monospace">
+    <rect width="250" height="235" rx="10" fill="#082f49" stroke="#0ea5e9" stroke-width="1.4" style="animation:pulseEq 3s infinite;animation-delay:.5s"/>
+    <rect width="250" height="4" rx="2" fill="#0ea5e9"/>
+
+    <text x="125" y="28" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="bold">NDWI (Channel 15)</text>
+    <text x="125" y="44" text-anchor="middle" fill="#7dd3fc" font-size="8">Normalized Difference Water Index</text>
+
+    <rect x="15" y="55" width="220" height="52" rx="6" fill="#041d2d" stroke="#0369a1" stroke-width="1"/>
+    <text x="125" y="76" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">NDWI = (B3 - B8) / (B3 + B8)</text>
+    <text x="125" y="96" text-anchor="middle" fill="#94a3b8" font-size="8.5">B3 (Green: 560nm) · B8 (NIR: 842nm)</text>
+
+    <text x="20" y="128" fill="#38bdf8" font-size="8.5" font-weight="bold">Physical Principle:</text>
+    <text x="20" y="144" fill="#cbd5e1" font-size="7.8">Water bodies reflect green light but</text>
+    <text x="20" y="157" fill="#cbd5e1" font-size="7.8">absorb almost 100% of NIR radiation.</text>
+
+    <rect x="20" y="172" width="210" height="12" rx="6" fill="#1e293b"/>
+    <rect x="125" y="172" width="105" height="12" rx="6" fill="url(#ndwiG)"/>
+    <text x="20" y="196" fill="#64748b" font-size="7.5">-1.0 (Forest)</text>
+    <text x="115" y="196" fill="#94a3b8" font-size="7.5">0.0 (Land)</text>
+    <text x="180" y="196" fill="#38bdf8" font-size="7.5" font-weight="bold">+1.0 (Ocean)</text>
+
+    <text x="125" y="222" text-anchor="middle" fill="#0ea5e9" font-size="8" font-weight="bold">Identifies: Oceans, Lakes &amp; Rivers</text>
+  </g>
+
+  <!-- INDEX 3: NDBI (Built-up Urban) -->
+  <g transform="translate(585, 45)" font-family="monospace">
+    <rect width="250" height="235" rx="10" fill="#2d1b0d" stroke="#f59e0b" stroke-width="1.4" style="animation:pulseEq 3s infinite;animation-delay:1s"/>
+    <rect width="250" height="4" rx="2" fill="#f59e0b"/>
+
+    <text x="125" y="28" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">NDBI (Channel 16)</text>
+    <text x="125" y="44" text-anchor="middle" fill="#fde68a" font-size="8">Normalized Difference Built-up Index</text>
+
+    <rect x="15" y="55" width="220" height="52" rx="6" fill="#190e05" stroke="#92400e" stroke-width="1"/>
+    <text x="125" y="76" text-anchor="middle" fill="#ffffff" font-size="12" font-weight="bold">NDBI = (B11 - B8) / (B11 + B8)</text>
+    <text x="125" y="96" text-anchor="middle" fill="#94a3b8" font-size="8.5">B11 (SWIR1: 1610nm) · B8 (NIR: 842nm)</text>
+
+    <text x="20" y="128" fill="#fbbf24" font-size="8.5" font-weight="bold">Physical Principle:</text>
+    <text x="20" y="144" fill="#cbd5e1" font-size="7.8">Concrete and asphalt reflect intensely</text>
+    <text x="20" y="157" fill="#cbd5e1" font-size="7.8">in SWIR relative to the NIR band.</text>
+
+    <rect x="20" y="172" width="210" height="12" rx="6" fill="#1e293b"/>
+    <rect x="125" y="172" width="105" height="12" rx="6" fill="url(#ndbiG)"/>
+    <text x="20" y="196" fill="#64748b" font-size="7.5">-1.0 (Forest)</text>
+    <text x="115" y="196" fill="#94a3b8" font-size="7.5">0.0 (Field)</text>
+    <text x="180" y="196" fill="#fbbf24" font-size="7.5" font-weight="bold">+1.0 (City)</text>
+
+    <text x="125" y="222" text-anchor="middle" fill="#f59e0b" font-size="8" font-weight="bold">Identifies: Concrete, Roads &amp; Roofs</text>
+  </g>
+
+  <!-- Bottom subtitle -->
+  <text x="430" y="310" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#64748b">
+    All 3 spectral indices are computed on-the-fly via native C++17 SIMD vectorized kernels prior to neural tensor ingestion.
+  </text>
+</svg>

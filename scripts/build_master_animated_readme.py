@@ -114,6 +114,46 @@ ANIM_TERMINAL = """<p align="center">
 </p>
 """
 
+ANIM_QUICKSTART_FLOWCHART = """<p align="center">
+  <img src="asset/quickstart_flowchart.svg" width="100%" alt="End-to-End Satellite Data Processing Pipeline" />
+</p>
+"""
+
+ANIM_SPECTRAL_SIGNATURE = """<p align="center">
+  <img src="asset/spectral_signature.svg" width="100%" alt="Sentinel-2 Multispectral Reflectance Signatures" />
+</p>
+"""
+
+ANIM_SPECTRAL_INDICES = """<p align="center">
+  <img src="asset/spectral_indices.svg" width="100%" alt="Mathematical Formulations of NDVI, NDWI & NDBI" />
+</p>
+"""
+
+ANIM_DILATED_CONV = """<p align="center">
+  <img src="asset/dilated_conv.svg" width="100%" alt="Dilated Convolutions & UBCF Blind-Spot Elimination" />
+</p>
+"""
+
+ANIM_UNET = """<p align="center">
+  <img src="asset/unet_architecture.svg" width="100%" alt="16-Channel Multispectral GeoSeg U-Net Architecture" />
+</p>
+"""
+
+ANIM_WORLDCOVER_PALETTE = """<p align="center">
+  <img src="asset/worldcover_palette.svg" width="100%" alt="ESA WorldCover 11-Class Land Cover Taxonomy Palette" />
+</p>
+"""
+
+ANIM_CONFUSION_MATRIX = """<p align="center">
+  <img src="asset/confusion_matrix.svg" width="100%" alt="Multispectral Land Cover Confusion Matrix Heatmap" />
+</p>
+"""
+
+ANIM_CPP_OOP = """<p align="center">
+  <img src="asset/cpp_oop_diagram.svg" width="100%" alt="C++17 Native OOP Engine Class Diagram" />
+</p>
+"""
+
 def build_master_animated_readme():
     print("Gathering sections for publication-grade animated README...")
     
@@ -141,7 +181,7 @@ def build_master_animated_readme():
         interactive_toc = ""
         s1_body = s1
     
-    # Inject animated barchart right after Executive Summary intro
+    # Inject animated barchart & flowchart
     if "### 1.1 Authentic Published Benchmark Comparison" in s1_body:
         s1_body = s1_body.replace(
             "### 1.1 Authentic Published Benchmark Comparison",
@@ -149,41 +189,78 @@ def build_master_animated_readme():
         )
     else:
         s1_body = s1_body + "\n\n" + ANIM_BARCHART
+
+    if "### High-Level System Architecture Diagram" in s1_body:
+        s1_body = s1_body.replace(
+            "### High-Level System Architecture Diagram",
+            ANIM_QUICKSTART_FLOWCHART + "\n\n### High-Level System Architecture Diagram"
+        )
         
     s1_full = HERO_HEADER + "\n\n" + interactive_toc + "\n\n" + s1_body
     
     # 2. Section 2 (ELI6)
     s2 = sec02_eli6.get_section()
     
-    # 3. Section 3 (Physics) + Orbital simulation
+    # 3. Section 3 (Physics) + Spectral Signatures + Orbital + Indices
     s3 = sec03_physics.get_section()
+    if "### 3.1 Electromagnetic Radiation & Atmospheric Transmission Windows" in s3:
+        s3 = s3.replace(
+            "### 3.1 Electromagnetic Radiation & Atmospheric Transmission Windows",
+            "### 3.1 Electromagnetic Radiation & Atmospheric Transmission Windows\n\n" + ANIM_SPECTRAL_SIGNATURE
+        )
     if "### 3.3 Comprehensive Breakdown of the 13 Sentinel-2 MSI Spectral Bands" in s3:
         s3 = s3.replace(
             "### 3.3 Comprehensive Breakdown of the 13 Sentinel-2 MSI Spectral Bands",
             ANIM_ORBITAL + "\n\n### 3.3 Comprehensive Breakdown of the 13 Sentinel-2 MSI Spectral Bands"
         )
-    else:
-        s3 = ANIM_ORBITAL + "\n\n" + s3
+    if "### 3.4 Derivation and Physics of Multispectral Indices" in s3:
+        s3 = s3.replace(
+            "### 3.4 Derivation and Physics of Multispectral Indices",
+            ANIM_SPECTRAL_INDICES + "\n\n### 3.4 Derivation and Physics of Multispectral Indices"
+        )
         
     # 4. Section 4 (Literature)
     s4 = sec04_literature.get_section()
     
-    # 5. Section 5 (PSISRNet Math) + Neural Net diagram
+    # 5. Section 5 (PSISRNet Math) + Neural Net + Dilated Conv
     s5 = sec05_psisr_math.get_section()
     if "### 5.1 Cascading Three-Stage Progressive Magnification" in s5:
         s5 = s5.replace(
             "### 5.1 Cascading Three-Stage Progressive Magnification",
             ANIM_NEURAL_NET + "\n\n### 5.1 Cascading Three-Stage Progressive Magnification"
         )
-    else:
-        s5 = ANIM_NEURAL_NET + "\n\n" + s5
+    if "### 5.3 Dilated Convolutions & Blind-Spot Elimination" in s5:
+        s5 = s5.replace(
+            "### 5.3 Dilated Convolutions & Blind-Spot Elimination",
+            ANIM_DILATED_CONV + "\n\n### 5.3 Dilated Convolutions & Blind-Spot Elimination"
+        )
         
-    # 6. Section 6 (GeoSeg U-Net)
+    # 6. Section 6 (GeoSeg U-Net) + UNet Diagram + Palette + Confusion Matrix
     s6 = sec06_unet.get_section()
-    
-    # 7. Section 7 (C++ OOP)
+    if "### 6.1 16-Channel Adapted ResNet-34 Encoder Architecture" in s6:
+        s6 = s6.replace(
+            "### 6.1 16-Channel Adapted ResNet-34 Encoder Architecture",
+            ANIM_UNET + "\n\n### 6.1 16-Channel Adapted ResNet-34 Encoder Architecture"
+        )
+    if "### 6.2 Decoder Feature Aggregation & Skip Connections" in s6:
+        s6 = s6.replace(
+            "### 6.2 Decoder Feature Aggregation & Skip Connections",
+            ANIM_WORLDCOVER_PALETTE + "\n\n### 6.2 Decoder Feature Aggregation & Skip Connections"
+        )
+    if "### 6.4 Metric Formulations: IoU, mIoU, Dice, Accuracy & Cohen's Kappa" in s6:
+        s6 = s6.replace(
+            "### 6.4 Metric Formulations: IoU, mIoU, Dice, Accuracy & Cohen's Kappa",
+            ANIM_CONFUSION_MATRIX + "\n\n### 6.4 Metric Formulations: IoU, mIoU, Dice, Accuracy & Cohen's Kappa"
+        )
+        
+    # 7. Section 7 (C++ OOP) + UML Diagram
     s7 = sec07_cpp_oop.get_section()
-    
+    if "### 7.1 Paradigm 1: Class Templates & Generic Programming" in s7:
+        s7 = s7.replace(
+            "### 7.1 Paradigm 1: Class Templates & Generic Programming",
+            ANIM_CPP_OOP + "\n\n### 7.1 Paradigm 1: Class Templates & Generic Programming"
+        )
+        
     # 8. Section 8 (Datasets & Benchmarks) + AID grid + Radar + Progress + Training
     s8 = sec08_datasets_benchmarks.get_section()
     if "### 8.1 The Aerial Image Dataset (AID)" in s8:

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 270">
+  <defs>
+    <style>
+      @keyframes popSwatch { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+    </style>
+  </defs>
+
+  <rect width="860" height="270" fill="#0b0f19" rx="12" stroke="#1e293b" stroke-width="1.5"/>
+
+  <text x="430" y="24" text-anchor="middle" font-family="'Fira Code', monospace" font-size="11.5" fill="#94a3b8" font-weight="bold">
+    🗺️ ESA WORLDCOVER 10-METER SEMANTIC LAND COVER CLASSIFICATION TAXONOMY
+  </text>
+
+  <!-- 11 Class Badges Grid: 4 columns x 3 rows -->
+  <!-- Col width: 195, gap: 15. Start X: 25. Row height: 60. Start Y: 45 -->
+  <g font-family="monospace" font-size="8">
+    <!-- Class 10: Tree cover -->
+    <g transform="translate(25, 45)" style="animation:popSwatch .3s ease-out .05s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#006400" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#006400"/>
+      <circle cx="22" cy="30" r="10" fill="#006400"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">10. Tree Cover</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Continuous tree canopy &gt;10%</text>
+    </g>
+
+    <!-- Class 20: Shrubland -->
+    <g transform="translate(225, 45)" style="animation:popSwatch .3s ease-out .1s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#ffbb22" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#ffbb22"/>
+      <circle cx="22" cy="30" r="10" fill="#ffbb22"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">20. Shrubland</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Woody perennials &lt;5m height</text>
+    </g>
+
+    <!-- Class 30: Grassland -->
+    <g transform="translate(425, 45)" style="animation:popSwatch .3s ease-out .15s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#ffff4c" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#ffff4c"/>
+      <circle cx="22" cy="30" r="10" fill="#ffff4c"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">30. Grassland</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Natural herbaceous pasture</text>
+    </g>
+
+    <!-- Class 40: Cropland -->
+    <g transform="translate(625, 45)" style="animation:popSwatch .3s ease-out .2s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#f096ff" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#f096ff"/>
+      <circle cx="22" cy="30" r="10" fill="#f096ff"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">40. Cropland</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Cultivated agricultural fields</text>
+    </g>
+
+    <!-- Row 2 -->
+    <!-- Class 50: Built-up -->
+    <g transform="translate(25, 115)" style="animation:popSwatch .3s ease-out .25s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#fa0000" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#fa0000"/>
+      <circle cx="22" cy="30" r="10" fill="#fa0000"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">50. Built-Up</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Urban concrete &amp; asphalt</text>
+    </g>
+
+    <!-- Class 60: Bare / sparse vegetation -->
+    <g transform="translate(225, 115)" style="animation:popSwatch .3s ease-out .3s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#b4b4b4" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#b4b4b4"/>
+      <circle cx="22" cy="30" r="10" fill="#b4b4b4"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">60. Bare / Sparse</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Sand dunes &amp; rocky soils</text>
+    </g>
+
+    <!-- Class 70: Snow and ice -->
+    <g transform="translate(425, 115)" style="animation:popSwatch .3s ease-out .35s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#f0f0f0" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#f0f0f0"/>
+      <circle cx="22" cy="30" r="10" fill="#f0f0f0"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">70. Snow &amp; Ice</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Permanent glaciers &amp; snow</text>
+    </g>
+
+    <!-- Class 80: Permanent water bodies -->
+    <g transform="translate(625, 115)" style="animation:popSwatch .3s ease-out .4s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#0064c8" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#0064c8"/>
+      <circle cx="22" cy="30" r="10" fill="#0064c8"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">80. Open Water</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Lakes, rivers, reservoirs, sea</text>
+    </g>
+
+    <!-- Row 3 -->
+    <!-- Class 90: Herbaceous wetland -->
+    <g transform="translate(25, 185)" style="animation:popSwatch .3s ease-out .45s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#0096a0" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#0096a0"/>
+      <circle cx="22" cy="30" r="10" fill="#0096a0"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">90. Herb. Wetland</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Permanent &amp; seasonal marsh</text>
+    </g>
+
+    <!-- Class 95: Mangroves -->
+    <g transform="translate(225, 185)" style="animation:popSwatch .3s ease-out .5s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#00cf75" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#00cf75"/>
+      <circle cx="22" cy="30" r="10" fill="#00cf75"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">95. Mangroves</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Coastal saline tidal forests</text>
+    </g>
+
+    <!-- Class 100: Moss and lichen -->
+    <g transform="translate(425, 185)" style="animation:popSwatch .3s ease-out .55s both">
+      <rect width="185" height="55" rx="6" fill="#1e293b" stroke="#fae6a0" stroke-width="1.2"/>
+      <rect width="185" height="4" rx="2" fill="#fae6a0"/>
+      <circle cx="22" cy="30" r="10" fill="#fae6a0"/>
+      <text x="40" y="27" fill="#ffffff" font-weight="bold">100. Moss &amp; Lichen</text>
+      <text x="40" y="42" fill="#94a3b8" font-size="7">Arctic tundra ground cover</text>
+    </g>
+
+    <!-- Compound Loss Badge -->
+    <g transform="translate(625, 185)">
+      <rect width="185" height="55" rx="6" fill="#052e16" stroke="#10b981" stroke-width="1.5"/>
+      <text x="92" y="24" text-anchor="middle" fill="#34d399" font-weight="bold">Loss Objective</text>
+      <text x="92" y="38" text-anchor="middle" fill="#86efac" font-size="7.5">L = L_Dice + L_WCE</text>
+      <text x="92" y="49" text-anchor="middle" fill="#10b981" font-size="7">Trained on 16-channel MSI</text>
+    </g>
+  </g>
+</svg>

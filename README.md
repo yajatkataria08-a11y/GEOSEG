@@ -146,6 +146,11 @@ However, optical satellite remote sensing suffers from three profound physical c
 4. **Production-Grade Interactive Web Platform**:
    A client-server architecture pairing an asynchronous **FastAPI (Python 3.12)** backend with an ultra-modern **React 18 / TypeScript / Vite 5 / Tailwind CSS v4** frontend. The interface features a 60fps dynamic starfield background, an interactive 3D Earth Globe with NASA Blue Marble surface textures, an interactive split-screen super-resolution slider, a 30-scene AID benchmark catalog, and multi-provider satellite maps (Google Satellite, ISRO Bhuvan, Esri World Imagery, OpenStreetMap, and False-Color NDVI).
 
+<p align="center">
+  <img src="asset/quickstart_flowchart.svg" width="100%" alt="End-to-End Satellite Data Processing Pipeline" />
+</p>
+
+
 ### High-Level System Architecture Diagram
 
 ```
@@ -610,11 +615,6 @@ By tracking the **Red-Edge bands (B05, B06, B07)** and calculating canopy nitrog
 <p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
-<p align="center">
-  <img src="asset/orbital.svg" width="100%" alt="Copernicus Sentinel-2 Orbit Simulation & 13-Band Multispectral Matrix" />
-</p>
-
-
 # 3. REMOTE SENSING PHYSICS & MULTISPECTRAL OPTICAL PRINCIPLES
 
 
@@ -1015,11 +1015,6 @@ The published results demonstrated that PSISR achieves a **+0.40 dB PSNR gain** 
 
 
 <p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
-
-
-<p align="center">
-  <img src="asset/neural_net.svg" width="100%" alt="Cascading UBCF PSISRNet Architecture Data Flow" />
-</p>
 
 
 # 5. MATHEMATICAL ARCHITECTURE OF PSISRNET
