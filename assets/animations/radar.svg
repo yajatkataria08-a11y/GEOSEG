@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 440">
+  <defs>
+    <style>
+      @keyframes radarSweep { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+      @keyframes polyFade1  { from{fill-opacity:0;stroke-width:0} to{fill-opacity:0.25;stroke-width:2} }
+      @keyframes polyFade2  { from{fill-opacity:0;stroke-width:0} to{fill-opacity:0.3;stroke-width:2} }
+      @keyframes polyFade3  { from{fill-opacity:0;stroke-width:0} to{fill-opacity:0.4;stroke-width:2.5} }
+      @keyframes dotPulse   { 0%,100%{r:4.5;opacity:1} 50%{r:7;opacity:.6} }
+    </style>
+  </defs>
+
+  <rect width="520" height="440" fill="#0f172a" rx="12"/>
+
+  <!-- Radar Spider Web Grid (Center at 260, 215) -->
+  <g fill="none" stroke="#334155" stroke-width="1">
+    <!-- Web levels -->
+    <polygon points="260,65  395,155 365,305 155,305 125,155" opacity="0.8"/>
+    <polygon points="260,95  368,167 344,287 176,287 152,167" opacity="0.6"/>
+    <polygon points="260,125 341,179 323,269 197,269 179,179" opacity="0.4"/>
+    <polygon points="260,155 314,191 302,251 218,251 206,191" opacity="0.3"/>
+    <polygon points="260,185 287,203 281,233 239,233 233,203" opacity="0.2"/>
+
+    <!-- Axis Rays -->
+    <line x1="260" y1="215" x2="260" y2="65" stroke="#475569" stroke-width="1.2"/>
+    <line x1="260" y1="215" x2="395" y2="155" stroke="#475569" stroke-width="1.2"/>
+    <line x1="260" y1="215" x2="365" y2="305" stroke="#475569" stroke-width="1.2"/>
+    <line x1="260" y1="215" x2="155" y2="305" stroke="#475569" stroke-width="1.2"/>
+    <line x1="260" y1="215" x2="125" y2="155" stroke="#475569" stroke-width="1.2"/>
+  </g>
+
+  <!-- Axis Labels -->
+  <text x="260" y="52"  text-anchor="middle" font-family="monospace" font-size="10.5" font-weight="bold" fill="#22d3ee">PSNR @ 2×</text>
+  <text x="410" y="153" font-family="monospace" font-size="10.5" font-weight="bold" fill="#818cf8">SSIM @ 2×</text>
+  <text x="375" y="325" font-family="monospace" font-size="10.5" font-weight="bold" fill="#34d399">Corr. Eff. %</text>
+  <text x="145" y="325" text-anchor="end" font-family="monospace" font-size="10.5" font-weight="bold" fill="#f59e0b">PSNR @ 8×</text>
+  <text x="110" y="153" text-anchor="end" font-family="monospace" font-size="10.5" font-weight="bold" fill="#f472b6">Structural Fid.</text>
+
+  <!-- Polygon 1: Bicubic Baseline -->
+  <polygon points="260,93 370,165 348,293 175,291 260,215" fill="#3b82f6" stroke="#3b82f6" stroke-width="1.5" style="animation:polyFade1 1s ease-out .2s forwards"/>
+
+  <!-- Polygon 2: RCAN Baseline -->
+  <polygon points="260,78 385,159 360,302 165,301 162,175" fill="#818cf8" stroke="#818cf8" stroke-width="2" style="animation:polyFade2 1s ease-out .6s forwards"/>
+
+  <!-- Polygon 3: PSISRNet (Proposed) -->
+  <polygon points="260,65 395,155 365,305 155,305 130,157" fill="#22d3ee" stroke="#22d3ee" stroke-width="2.5" style="animation:polyFade3 1.2s ease-out 1s forwards"/>
+
+  <!-- Glowing Vertices on PSISRNet -->
+  <circle cx="260" cy="65"  r="4.5" fill="#22d3ee" style="animation:dotPulse 2s infinite"/>
+  <circle cx="395" cy="155" r="4.5" fill="#22d3ee" style="animation:dotPulse 2s infinite;animation-delay:.3s"/>
+  <circle cx="365" cy="305" r="4.5" fill="#22d3ee" style="animation:dotPulse 2s infinite;animation-delay:.6s"/>
+  <circle cx="155" cy="305" r="4.5" fill="#22d3ee" style="animation:dotPulse 2s infinite;animation-delay:.9s"/>
+  <circle cx="130" cy="157" r="4.5" fill="#22d3ee" style="animation:dotPulse 2s infinite;animation-delay:1.2s"/>
+
+  <!-- Legend -->
+  <g font-family="monospace" font-size="9">
+    <rect x="40" y="380" width="14" height="10" rx="3" fill="#3b82f6" opacity="0.6"/>
+    <text x="62" y="389" fill="#94a3b8">Bicubic (Baseline)</text>
+
+    <rect x="195" y="380" width="14" height="10" rx="3" fill="#818cf8" opacity="0.7"/>
+    <text x="217" y="389" fill="#94a3b8">RCAN (Zhang et al.)</text>
+
+    <rect x="360" y="380" width="14" height="10" rx="3" fill="#22d3ee"/>
+    <text x="382" y="389" fill="#22d3ee" font-weight="bold">★ PSISRNet (Ours)</text>
+  </g>
+
+  <!-- Bottom subtitle -->
+  <text x="260" y="420" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#64748b">
+    Evaluation across AID + WHU-RS19 benchmarks. Area corresponds to aggregate capability.
+  </text>
+</svg>

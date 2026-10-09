@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 280">
+  <defs>
+    <style>
+      @keyframes flowPulse { 0%,100%{opacity:.3;r:4} 50%{opacity:1;r:6} }
+      @keyframes travel    { from{offset-distance:0%} to{offset-distance:100%} }
+      @keyframes blockFade { from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+      @keyframes borderGlow{ 0%,100%{stroke-opacity:.4} 50%{stroke-opacity:1} }
+      @keyframes arrowDash { from{stroke-dashoffset:60} to{stroke-dashoffset:0} }
+    </style>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3z" fill="#818cf8"/>
+    </marker>
+    <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3z" fill="#34d399"/>
+    </marker>
+    <marker id="arr4" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L6,3z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="860" height="280" fill="#020617" rx="12"/>
+  <text x="430" y="20" text-anchor="middle" font-family="monospace" font-size="11" fill="#475569" font-weight="bold">PSISRNet — Cascading UBCF Architecture · Live Data Flow</text>
+
+  <!-- INPUT -->
+  <g style="animation:blockFade .4s ease-out .1s both">
+    <rect x="10" y="80" width="110" height="120" rx="10" fill="#1e293b" stroke="#475569" stroke-width="1.5"/>
+    <text x="65" y="112" text-anchor="middle" font-family="monospace" font-size="9"  fill="#94a3b8">LR Input</text>
+    <text x="65" y="132" text-anchor="middle" font-family="monospace" font-size="13" fill="#e2e8f0" font-weight="bold">64×64</text>
+    <text x="65" y="150" text-anchor="middle" font-family="monospace" font-size="8"  fill="#64748b">16 channels</text>
+    <text x="65" y="168" text-anchor="middle" font-family="monospace" font-size="8"  fill="#64748b">Sentinel-2 MSI</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <line x1="120" y1="140" x2="148" y2="140" stroke="#22d3ee" stroke-width="2" marker-end="url(#arr)" style="animation:arrowDash .5s ease-out .4s both" stroke-dasharray="60" stroke-dashoffset="60"/>
+  <circle cx="134" cy="140" r="5" fill="#22d3ee" style="animation:flowPulse 1.5s ease-in-out .5s infinite"/>
+
+  <!-- UBCF 2× -->
+  <g style="animation:blockFade .4s ease-out .5s both">
+    <rect x="150" y="60" width="150" height="160" rx="10" fill="#164e63" stroke="#22d3ee" stroke-width="2" style="animation:borderGlow 2s ease-in-out .5s infinite"/>
+    <rect x="150" y="60" width="150" height="5" rx="2.5" fill="#22d3ee" opacity="0.8"/>
+    <text x="225" y="87" text-anchor="middle" font-family="monospace" font-size="10" fill="#22d3ee" font-weight="bold">UBCF × 2</text>
+    <text x="225" y="104" text-anchor="middle" font-family="monospace" font-size="8"  fill="#67e8f9">Dilated Conv d=1,2,4</text>
+    <text x="225" y="119" text-anchor="middle" font-family="monospace" font-size="8"  fill="#67e8f9">Correlation Filter</text>
+    <text x="225" y="134" text-anchor="middle" font-family="monospace" font-size="8"  fill="#67e8f9">Sub-Pixel Shuffle</text>
+    <text x="225" y="149" text-anchor="middle" font-family="monospace" font-size="8"  fill="#67e8f9">Channel Attention</text>
+    <text x="225" y="168" text-anchor="middle" font-family="monospace" font-size="10" fill="#a5f3fc" font-weight="bold">→ 128×128</text>
+    <text x="225" y="185" text-anchor="middle" font-family="monospace" font-size="8"  fill="#0e7490">2× Magnification</text>
+    <text x="225" y="206" text-anchor="middle" font-family="monospace" font-size="8"  fill="#16a34a">PSNR 33.2 dB</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <line x1="300" y1="140" x2="328" y2="140" stroke="#818cf8" stroke-width="2" marker-end="url(#arr2)" style="animation:arrowDash .5s ease-out .9s both" stroke-dasharray="60" stroke-dashoffset="60"/>
+  <circle cx="314" cy="140" r="5" fill="#818cf8" style="animation:flowPulse 1.5s ease-in-out 1s infinite"/>
+
+  <!-- UBCF 4× -->
+  <g style="animation:blockFade .4s ease-out .9s both">
+    <rect x="330" y="45" width="150" height="190" rx="10" fill="#1e1b4b" stroke="#818cf8" stroke-width="2" style="animation:borderGlow 2.5s ease-in-out 1s infinite"/>
+    <rect x="330" y="45" width="150" height="5" rx="2.5" fill="#818cf8" opacity="0.8"/>
+    <text x="405" y="72" text-anchor="middle" font-family="monospace" font-size="10" fill="#818cf8" font-weight="bold">UBCF × 4</text>
+    <text x="405" y="89" text-anchor="middle" font-family="monospace" font-size="8"  fill="#a5b4fc">Dilated Conv d=2,4,8</text>
+    <text x="405" y="104" text-anchor="middle" font-family="monospace" font-size="8"  fill="#a5b4fc">UBCF Deep Corr.</text>
+    <text x="405" y="119" text-anchor="middle" font-family="monospace" font-size="8"  fill="#a5b4fc">Sub-Pixel Shuffle</text>
+    <text x="405" y="134" text-anchor="middle" font-family="monospace" font-size="8"  fill="#a5b4fc">Self-Attention Gate</text>
+    <text x="405" y="149" text-anchor="middle" font-family="monospace" font-size="8"  fill="#a5b4fc">Blind-Spot Elim.</text>
+    <text x="405" y="170" text-anchor="middle" font-family="monospace" font-size="10" fill="#c4b5fd" font-weight="bold">→ 256×256</text>
+    <text x="405" y="188" text-anchor="middle" font-family="monospace" font-size="8"  fill="#5b21b6">4× Magnification</text>
+    <text x="405" y="210" text-anchor="middle" font-family="monospace" font-size="8"  fill="#16a34a">PSNR 35.4 dB</text>
+    <text x="405" y="228" text-anchor="middle" font-family="monospace" font-size="7"  fill="#334155">SSIM 0.921</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <line x1="480" y1="140" x2="508" y2="140" stroke="#34d399" stroke-width="2" marker-end="url(#arr3)" style="animation:arrowDash .5s ease-out 1.3s both" stroke-dasharray="60" stroke-dashoffset="60"/>
+  <circle cx="494" cy="140" r="5" fill="#34d399" style="animation:flowPulse 1.5s ease-in-out 1.4s infinite"/>
+
+  <!-- UBCF 8× -->
+  <g style="animation:blockFade .4s ease-out 1.3s both">
+    <rect x="510" y="30" width="150" height="220" rx="10" fill="#052e16" stroke="#34d399" stroke-width="2" style="animation:borderGlow 3s ease-in-out 1.5s infinite"/>
+    <rect x="510" y="30" width="150" height="5" rx="2.5" fill="#34d399" opacity="0.8"/>
+    <text x="585" y="57" text-anchor="middle" font-family="monospace" font-size="10" fill="#34d399" font-weight="bold">UBCF × 8</text>
+    <text x="585" y="74" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">Dilated d=4,8,16</text>
+    <text x="585" y="89" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">UBCF 8× Corr.</text>
+    <text x="585" y="104" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">Sub-Pixel Shuffle</text>
+    <text x="585" y="119" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">Checkerboard Suppress</text>
+    <text x="585" y="134" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">Anti-aliasing Pass</text>
+    <text x="585" y="149" text-anchor="middle" font-family="monospace" font-size="8"  fill="#6ee7b7">Residual Refinement</text>
+    <text x="585" y="170" text-anchor="middle" font-family="monospace" font-size="10" fill="#a7f3d0" font-weight="bold">→ 512×512</text>
+    <text x="585" y="190" text-anchor="middle" font-family="monospace" font-size="8"  fill="#14532d">8× Magnification</text>
+    <text x="585" y="208" text-anchor="middle" font-family="monospace" font-size="8"  fill="#16a34a">PSNR 38.47 dB</text>
+    <text x="585" y="225" text-anchor="middle" font-family="monospace" font-size="7"  fill="#16a34a">SSIM 0.9592 🏆</text>
+    <text x="585" y="240" text-anchor="middle" font-family="monospace" font-size="7"  fill="#16a34a">Corr. 99.25%</text>
+  </g>
+
+  <!-- Arrow 4 -->
+  <line x1="660" y1="140" x2="688" y2="140" stroke="#f59e0b" stroke-width="2" marker-end="url(#arr4)" style="animation:arrowDash .5s ease-out 1.7s both" stroke-dasharray="60" stroke-dashoffset="60"/>
+  <circle cx="674" cy="140" r="5" fill="#f59e0b" style="animation:flowPulse 1.5s ease-in-out 1.8s infinite"/>
+
+  <!-- OUTPUT -->
+  <g style="animation:blockFade .5s ease-out 1.7s both">
+    <rect x="690" y="70" width="155" height="140" rx="10" fill="#1c1917" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="690" y="70" width="155" height="5" rx="2.5" fill="#f59e0b" opacity="0.8"/>
+    <text x="767" y="100" text-anchor="middle" font-family="monospace" font-size="9"  fill="#fcd34d">SR Output Image</text>
+    <text x="767" y="124" text-anchor="middle" font-family="monospace" font-size="20" fill="#f59e0b" font-weight="bold">512×512</text>
+    <text x="767" y="145" text-anchor="middle" font-family="monospace" font-size="8"  fill="#78716c">3-channel RGB</text>
+    <text x="767" y="165" text-anchor="middle" font-family="monospace" font-size="9"  fill="#22d3ee" font-weight="bold">PSNR: 38.47 dB</text>
+    <text x="767" y="182" text-anchor="middle" font-family="monospace" font-size="9"  fill="#818cf8">SSIM: 0.9592</text>
+    <text x="767" y="198" text-anchor="middle" font-family="monospace" font-size="8"  fill="#16a34a">+3.02 dB over RCAN</text>
+  </g>
+
+  <!-- Bottom annotation -->
+  <text x="430" y="268" text-anchor="middle" font-family="monospace" font-size="9" fill="#1e293b">
+    <animate attributeName="fill" from="#1e293b" to="#475569" dur=".5s" begin="2.5s" fill="freeze"/>
+    Cascading UBCF PSISRNet — Progressive 2×→4×→8× Upscaling Pipeline (Sharma et al. 2025)
+  </text>
+</svg>

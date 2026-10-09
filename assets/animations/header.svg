@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 200">
+  <defs>
+    <style>
+      @keyframes twinkle { 0%,100%{opacity:.2} 50%{opacity:1} }
+      @keyframes orbit1  { from{offset-distance:0%} to{offset-distance:100%} }
+      @keyframes scanline{ 0%{transform:translateY(-5px);opacity:0} 10%{opacity:.6} 90%{opacity:.5} 100%{transform:translateY(205px);opacity:0} }
+      @keyframes fadeUp  { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+      @keyframes pulse   { 0%,100%{opacity:.4} 50%{opacity:1} }
+      @keyframes glow    { 0%,100%{filter:drop-shadow(0 0 4px #22d3ee)} 50%{filter:drop-shadow(0 0 14px #22d3ee)} }
+      @keyframes wave    { 0%{d:path("M0,160 C215,130 430,190 645,150 C752,130 800,145 860,140 L860,200 L0,200 Z")}
+                          50%{d:path("M0,150 C215,180 430,130 645,165 C752,180 800,160 860,155 L860,200 L0,200 Z")}
+                         100%{d:path("M0,160 C215,130 430,190 645,150 C752,130 800,145 860,140 L860,200 L0,200 Z")} }
+      @keyframes satellite { 0%  {offset-distance:0%}   100%{offset-distance:100%} }
+    </style>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#020617"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#22d3ee"/>
+      <stop offset="50%"  stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#1e3a5f" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0c1a2e" stop-opacity="0.95"/>
+    </linearGradient>
+    <filter id="titleGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="earthGlow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="earthColor" cx="50%" cy="40%" r="50%">
+      <stop offset="0%"   stop-color="#1d4ed8"/>
+      <stop offset="60%"  stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#172554"/>
+    </radialGradient>
+    <!-- Satellite orbit path (centered on earth at 70,100) -->
+    <path id="orb" d="M 70,60 A 55,18 0 1,1 69.9,60 Z" fill="none"/>
+  </defs>
+
+  <!-- Background -->
+  <rect width="860" height="200" fill="url(#sky)"/>
+
+  <!-- Stars -->
+  <circle cx="20"  cy="15"  r="1.2" fill="white" style="animation:twinkle 2.1s ease-in-out infinite"/>
+  <circle cx="90"  cy="40"  r="1"   fill="white" style="animation:twinkle 3.4s ease-in-out infinite"/>
+  <circle cx="180" cy="12"  r="1.4" fill="#93c5fd" style="animation:twinkle 1.8s ease-in-out infinite"/>
+  <circle cx="300" cy="35"  r="1"   fill="white" style="animation:twinkle 2.7s ease-in-out infinite"/>
+  <circle cx="430" cy="8"   r="1.3" fill="#c4b5fd" style="animation:twinkle 4.2s ease-in-out infinite"/>
+  <circle cx="550" cy="28"  r="1"   fill="white" style="animation:twinkle 3s ease-in-out infinite"/>
+  <circle cx="660" cy="16"  r="1.4" fill="#6ee7b7" style="animation:twinkle 2.5s ease-in-out infinite"/>
+  <circle cx="750" cy="42"  r="1"   fill="white" style="animation:twinkle 1.9s ease-in-out infinite"/>
+  <circle cx="820" cy="22"  r="1.2" fill="white" style="animation:twinkle 3.7s ease-in-out infinite"/>
+  <circle cx="845" cy="58"  r="1"   fill="#fde68a" style="animation:twinkle 2.3s ease-in-out infinite"/>
+  <circle cx="140" cy="70"  r="0.8" fill="white" style="animation:twinkle 3.1s ease-in-out infinite"/>
+  <circle cx="370" cy="65"  r="1"   fill="white" style="animation:twinkle 2.6s ease-in-out infinite"/>
+  <circle cx="620" cy="55"  r="0.9" fill="#a5f3fc" style="animation:twinkle 4s ease-in-out infinite"/>
+  <circle cx="780" cy="70"  r="1"   fill="white" style="animation:twinkle 2.2s ease-in-out infinite"/>
+
+  <!-- Earth -->
+  <g filter="url(#earthGlow)">
+    <circle cx="70" cy="105" r="42" fill="url(#earthColor)"/>
+    <ellipse cx="60" cy="92"  rx="16" ry="11" fill="#16a34a" opacity="0.85" transform="rotate(-15,60,92)"/>
+    <ellipse cx="82" cy="108" rx="11" ry="8"  fill="#15803d" opacity="0.75" transform="rotate(10,82,108)"/>
+    <ellipse cx="52" cy="115" rx="9"  ry="6"  fill="#166534" opacity="0.65"/>
+    <ellipse cx="70" cy="67"  rx="28" ry="7"  fill="white"   opacity="0.3"/>
+    <ellipse cx="70" cy="143" rx="24" ry="6"  fill="white"   opacity="0.2"/>
+    <circle cx="70" cy="105" r="42" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity="0.3" style="animation:pulse 3s ease-in-out infinite"/>
+  </g>
+
+  <!-- Orbit ring (decorative) -->
+  <ellipse cx="70" cy="105" rx="58" ry="19" fill="none" stroke="#22d3ee" stroke-width="0.8" stroke-dasharray="5,4" opacity="0.4"/>
+
+  <!-- Satellite moving on orbit -->
+  <g style="offset-path:path('M 125,105 A 55,18 0 1,0 125.1,105 Z');animation:satellite 8s linear infinite;offset-rotate:auto">
+    <rect x="-7" y="-3.5" width="14" height="7" rx="1.5" fill="#e2e8f0"/>
+    <rect x="-12" y="-2" width="4" height="4" rx="0.5" fill="#fbbf24"/>
+    <rect x="8"   y="-2" width="4" height="4" rx="0.5" fill="#fbbf24"/>
+    <circle cx="0" cy="0" r="2" fill="#38bdf8" style="animation:pulse 1.5s ease-in-out infinite"/>
+    <!-- scanner beam -->
+    <line x1="0" y1="3.5" x2="0" y2="14" stroke="#22d3ee" stroke-width="1" opacity="0.7" style="animation:pulse 1.5s ease-in-out infinite"/>
+  </g>
+
+  <!-- Wave footer shape -->
+  <path d="M0,160 C215,130 430,190 645,150 C752,130 800,145 860,140 L860,200 L0,200 Z" fill="url(#waveGrad)" style="animation:wave 5s ease-in-out infinite"/>
+
+  <!-- Main title -->
+  <text x="470" y="78" text-anchor="middle" font-family="'Courier New',monospace" font-size="52" font-weight="bold" fill="url(#titleGrad)" filter="url(#titleGlow)" style="animation:glow 3s ease-in-out infinite;animation:fadeUp .8s ease-out forwards">GEOSEG</text>
+
+  <!-- Subtitle -->
+  <text x="470" y="106" text-anchor="middle" font-family="'Courier New',monospace" font-size="11" fill="#94a3b8" letter-spacing="2.5" style="animation:fadeUp 1s ease-out .3s both">SATELLITE MULTISPECTRAL SUPER-RESOLUTION &amp; LAND COVER SEGMENTATION</text>
+
+  <!-- Tag bar -->
+  <rect x="190" y="118" width="470" height="26" rx="13" fill="#1e3a5f" opacity="0.85"/>
+  <text x="425" y="134" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#67e8f9" style="animation:fadeUp 1.2s ease-out .5s both">
+    📄 Elsevier Chemometrics &amp; Intelligent Laboratory Systems · 2025
+  </text>
+
+  <!-- Scanline effect -->
+  <rect width="860" height="2" fill="#22d3ee" opacity="0.4" style="animation:scanline 5s linear infinite"/>
+
+  <!-- Bottom metrics strip -->
+  <rect x="0" y="178" width="860" height="22" fill="#0f172a" opacity="0.7"/>
+  <text x="430" y="193" text-anchor="middle" font-family="'Courier New',monospace" font-size="9" fill="#475569" letter-spacing="1.5">
+    PSNR 38.47 dB  ·  SSIM 0.9592  ·  PEARSON 99.25%  ·  8× UPSCALING  ·  30 AID CLASSES  ·  18 ENDPOINTS
+  </text>
+</svg>
