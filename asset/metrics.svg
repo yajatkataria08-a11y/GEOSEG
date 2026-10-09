@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 160">
+  <defs>
+    <style>
+      @keyframes grow1  { from{width:0} to{width:504px} }
+      @keyframes grow2  { from{width:0} to{width:567px} }
+      @keyframes grow3  { from{width:0} to{width:618px} }
+      @keyframes popIn  { 0%{opacity:0;transform:scale(.6)} 70%{transform:scale(1.1)} 100%{opacity:1;transform:scale(1)} }
+      @keyframes shimmer{ 0%{transform:translateX(-200px)} 100%{transform:translateX(900px)} }
+      @keyframes countUp{ from{opacity:0} to{opacity:1} }
+    </style>
+    <linearGradient id="card1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e293b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+    <linearGradient id="card2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0f0a2e"/></linearGradient>
+    <linearGradient id="card3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#052e16"/><stop offset="100%" stop-color="#021a0c"/></linearGradient>
+    <linearGradient id="card4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1c1917"/><stop offset="100%" stop-color="#0f0f0f"/></linearGradient>
+    <linearGradient id="card5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2d1b3d"/><stop offset="100%" stop-color="#150a20"/></linearGradient>
+    <filter id="cardGlow"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#22d3ee" flood-opacity="0.12"/></filter>
+    <clipPath id="shimClip"><rect x="0" y="0" width="860" height="160" rx="0"/></clipPath>
+  </defs>
+
+  <rect width="860" height="160" fill="#020617"/>
+
+  <!-- Card 1: PSNR -->
+  <g style="animation:popIn .5s ease-out .1s both" filter="url(#cardGlow)">
+    <rect x="12"  y="16" width="155" height="130" rx="12" fill="url(#card1)" stroke="#22d3ee" stroke-width="1.2"/>
+    <rect x="12"  y="16" width="155" height="4"   rx="2"  fill="#22d3ee" opacity="0.8"/>
+    <text x="89"  y="55" text-anchor="middle" font-family="monospace" font-size="9"  fill="#64748b">PSNR @ 2× Scale</text>
+    <text x="89"  y="88" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#22d3ee">38.47</text>
+    <text x="89"  y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="#94a3b8">dB (SOTA)</text>
+    <rect x="32"  y="116" width="0" height="3" rx="1.5" fill="#22d3ee" style="animation:grow1 1.2s ease-out .6s both"/>
+    <text x="89"  y="138" text-anchor="middle" font-family="monospace" font-size="9"  fill="#16a34a">+3.02 dB over RCAN</text>
+  </g>
+
+  <!-- Card 2: SSIM -->
+  <g style="animation:popIn .5s ease-out .25s both" filter="url(#cardGlow)">
+    <rect x="181" y="16" width="155" height="130" rx="12" fill="url(#card2)" stroke="#818cf8" stroke-width="1.2"/>
+    <rect x="181" y="16" width="155" height="4"   rx="2"  fill="#818cf8" opacity="0.8"/>
+    <text x="258"  y="55" text-anchor="middle" font-family="monospace" font-size="9"  fill="#64748b">SSIM @ 2× Scale</text>
+    <text x="258"  y="88" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#818cf8">0.9592</text>
+    <text x="258"  y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="#94a3b8">Structural Sim.</text>
+    <rect x="201"  y="116" width="0" height="3" rx="1.5" fill="#818cf8" style="animation:grow2 1.2s ease-out .8s both"/>
+    <text x="258"  y="138" text-anchor="middle" font-family="monospace" font-size="9"  fill="#16a34a">+0.0177 over RCAN</text>
+  </g>
+
+  <!-- Card 3: Correlation -->
+  <g style="animation:popIn .5s ease-out .4s both" filter="url(#cardGlow)">
+    <rect x="350" y="16" width="155" height="130" rx="12" fill="url(#card3)" stroke="#34d399" stroke-width="1.2"/>
+    <rect x="350" y="16" width="155" height="4"   rx="2"  fill="#34d399" opacity="0.8"/>
+    <text x="427"  y="55" text-anchor="middle" font-family="monospace" font-size="9"  fill="#64748b">Pearson Corr.</text>
+    <text x="427"  y="88" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#34d399">99.25</text>
+    <text x="427"  y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="#94a3b8">% Efficiency</text>
+    <rect x="370"  y="116" width="0" height="3" rx="1.5" fill="#34d399" style="animation:grow3 1.2s ease-out 1s both"/>
+    <text x="427"  y="138" text-anchor="middle" font-family="monospace" font-size="9"  fill="#16a34a">UBCF Corr. Filter</text>
+  </g>
+
+  <!-- Card 4: Params -->
+  <g style="animation:popIn .5s ease-out .55s both" filter="url(#cardGlow)">
+    <rect x="519" y="16" width="155" height="130" rx="12" fill="url(#card4)" stroke="#f59e0b" stroke-width="1.2"/>
+    <rect x="519" y="16" width="155" height="4"   rx="2"  fill="#f59e0b" opacity="0.8"/>
+    <text x="596"  y="55" text-anchor="middle" font-family="monospace" font-size="9"  fill="#64748b">Model Params</text>
+    <text x="596"  y="88" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#f59e0b">21.89</text>
+    <text x="596"  y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="#94a3b8">Million (M)</text>
+    <rect x="539"  y="116" width="0" height="3" rx="1.5" fill="#f59e0b" style="animation:grow1 1.2s ease-out 1.2s both"/>
+    <text x="596"  y="138" text-anchor="middle" font-family="monospace" font-size="9"  fill="#16a34a">PSISRNet Full</text>
+  </g>
+
+  <!-- Card 5: AID -->
+  <g style="animation:popIn .5s ease-out .7s both" filter="url(#cardGlow)">
+    <rect x="688" y="16" width="155" height="130" rx="12" fill="url(#card5)" stroke="#f472b6" stroke-width="1.2"/>
+    <rect x="688" y="16" width="155" height="4"   rx="2"  fill="#f472b6" opacity="0.8"/>
+    <text x="765"  y="55" text-anchor="middle" font-family="monospace" font-size="9"  fill="#64748b">AID Scene Classes</text>
+    <text x="765"  y="88" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#f472b6">30</text>
+    <text x="765"  y="106" text-anchor="middle" font-family="monospace" font-size="10" fill="#94a3b8">Aerial Categories</text>
+    <rect x="708"  y="116" width="0" height="3" rx="1.5" fill="#f472b6" style="animation:grow1 1.2s ease-out 1.4s both"/>
+    <text x="765"  y="138" text-anchor="middle" font-family="monospace" font-size="9"  fill="#16a34a">10,000 Images</text>
+  </g>
+
+  <!-- Shimmer overlay sweep -->
+  <g clip-path="url(#shimClip)">
+    <rect x="-200" y="0" width="120" height="160" fill="white" opacity="0.04" transform="skewX(-15)" style="animation:shimmer 4s ease-in-out 2s infinite"/>
+  </g>
+</svg>

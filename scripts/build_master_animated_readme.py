@@ -35,7 +35,7 @@ from build_epic_10k_readme import generate_appendices
 # ─── ANIMATED EMBED SNIPPETS (CAMO & GITHUB COMPATIBLE) ──────────────────────
 
 HERO_HEADER = """<p align="center">
-  <img src="assets/animations/header.svg" width="100%" alt="GEOSEG Cosmic Satellite Header" />
+  <img src="asset/hero.svg" width="100%" alt="GEOSEG Cosmic Satellite Header" />
 </p>
 
 <p align="center">
@@ -57,60 +57,60 @@ HERO_HEADER = """<p align="center">
 </p>
 
 <p align="center">
-  <img src="assets/animations/metrics.svg" width="100%" alt="Key Metric Cards (PSNR, SSIM, Pearson Correlation, Model Params, AID Classes)" />
+  <img src="asset/stats.svg" width="100%" alt="Key Metric Cards (PSNR, SSIM, Pearson Correlation, Model Params, AID Classes)" />
 </p>
 
 <p align="center">
-  <img src="assets/animations/wave_cyan.svg" width="100%" alt="Animated Cyan Wave Divider" />
+  <img src="asset/wave_cyan.svg" width="100%" alt="Animated Cyan Wave Divider" />
 </p>
 """
 
-WAVE_CYAN = '<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>\n'
-WAVE_PURPLE = '<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>\n'
-WAVE_GREEN = '<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>\n'
+WAVE_CYAN = '<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>\n'
+WAVE_PURPLE = '<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>\n'
+WAVE_GREEN = '<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>\n'
 
 ANIM_BARCHART = """<p align="center">
-  <img src="assets/animations/barchart.svg" width="100%" alt="PSNR Benchmark Comparison Bar Chart @ 2x Scale Factor" />
+  <img src="asset/barchart.svg" width="100%" alt="PSNR Benchmark Comparison Bar Chart @ 2x Scale Factor" />
 </p>
 """
 
 ANIM_ORBITAL = """<p align="center">
-  <img src="assets/animations/orbital.svg" width="100%" alt="Copernicus Sentinel-2 Orbit Simulation & 13-Band Multispectral Matrix" />
+  <img src="asset/orbital.svg" width="100%" alt="Copernicus Sentinel-2 Orbit Simulation & 13-Band Multispectral Matrix" />
 </p>
 """
 
 ANIM_NEURAL_NET = """<p align="center">
-  <img src="assets/animations/neural_net.svg" width="100%" alt="Cascading UBCF PSISRNet Architecture Data Flow" />
+  <img src="asset/neural_net.svg" width="100%" alt="Cascading UBCF PSISRNet Architecture Data Flow" />
 </p>
 """
 
 ANIM_TECH_STACK = """<p align="center">
-  <img src="assets/animations/tech_stack.svg" width="100%" alt="Full-Stack System Architecture: React UI, FastAPI Backend & PyTorch Core" />
+  <img src="asset/tech_stack.svg" width="100%" alt="Full-Stack System Architecture: React UI, FastAPI Backend & PyTorch Core" />
 </p>
 """
 
 ANIM_AID_GRID = """<p align="center">
-  <img src="assets/animations/aid_grid.svg" width="100%" alt="Complete 30-Scene Aerial Image Dataset (AID) Encyclopedia" />
+  <img src="asset/aid_grid.svg" width="100%" alt="Complete 30-Scene Aerial Image Dataset (AID) Encyclopedia" />
 </p>
 """
 
 ANIM_RADAR = """<p align="center">
-  <img src="assets/animations/radar.svg" width="65%" alt="Multi-Axis Model Evaluation Radar: PSISRNet vs RCAN vs Bicubic" />
+  <img src="asset/radar.svg" width="65%" alt="Multi-Axis Model Evaluation Radar: PSISRNet vs RCAN vs Bicubic" />
 </p>
 """
 
 ANIM_PROGRESS = """<p align="center">
-  <img src="assets/animations/progress.svg" width="100%" alt="Quantitative Benchmark Matrix - Multi-Metric Progress Audit" />
+  <img src="asset/progress.svg" width="100%" alt="Quantitative Benchmark Matrix - Multi-Metric Progress Audit" />
 </p>
 """
 
 ANIM_TRAINING = """<p align="center">
-  <img src="assets/animations/training_dynamics.svg" width="100%" alt="Training Convergence Dynamics (Loss Reduction & PSNR Increase Over 3 Epochs)" />
+  <img src="asset/training_dynamics.svg" width="100%" alt="Training Convergence Dynamics (Loss Reduction & PSNR Increase Over 3 Epochs)" />
 </p>
 """
 
 ANIM_TERMINAL = """<p align="center">
-  <img src="assets/animations/terminal.svg" width="100%" alt="Interactive Command Line Terminal - Step-by-Step Reproduction" />
+  <img src="asset/terminal.svg" width="100%" alt="Interactive Command Line Terminal - Step-by-Step Reproduction" />
 </p>
 """
 

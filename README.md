@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/animations/header.svg" width="100%" alt="GEOSEG Cosmic Satellite Header" />
+  <img src="asset/hero.svg" width="100%" alt="GEOSEG Cosmic Satellite Header" />
 </p>
 
 <p align="center">
@@ -21,11 +21,11 @@
 </p>
 
 <p align="center">
-  <img src="assets/animations/metrics.svg" width="100%" alt="Key Metric Cards (PSNR, SSIM, Pearson Correlation, Model Params, AID Classes)" />
+  <img src="asset/stats.svg" width="100%" alt="Key Metric Cards (PSNR, SSIM, Pearson Correlation, Model Params, AID Classes)" />
 </p>
 
 <p align="center">
-  <img src="assets/animations/wave_cyan.svg" width="100%" alt="Animated Cyan Wave Divider" />
+  <img src="asset/wave_cyan.svg" width="100%" alt="Animated Cyan Wave Divider" />
 </p>
 
 
@@ -198,11 +198,11 @@ However, optical satellite remote sensing suffers from three profound physical c
 
 
 <p align="center">
-  <img src="assets/animations/barchart.svg" width="100%" alt="PSNR Benchmark Comparison Bar Chart @ 2x Scale Factor" />
+  <img src="asset/barchart.svg" width="100%" alt="PSNR Benchmark Comparison Bar Chart @ 2x Scale Factor" />
 </p>
 
 
-<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
+<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
 
 
 # 2. "EXPLAIN IT LIKE I'M 6" (ELI6): THE COMPLETE STORYBOOK GUIDE
@@ -607,11 +607,11 @@ By tracking the **Red-Edge bands (B05, B06, B07)** and calculating canopy nitrog
 ---
 
 
-<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
+<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
 <p align="center">
-  <img src="assets/animations/orbital.svg" width="100%" alt="Copernicus Sentinel-2 Orbit Simulation & 13-Band Multispectral Matrix" />
+  <img src="asset/orbital.svg" width="100%" alt="Copernicus Sentinel-2 Orbit Simulation & 13-Band Multispectral Matrix" />
 </p>
 
 
@@ -866,7 +866,7 @@ $$\\text{BSI} = \\frac{(\\rho_{\\text{SWIR1}} + \\rho_{\\text{Red}}) - (\\rho_{\
 ---
 
 
-<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
+<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
 
 
 # 4. ACADEMIC LITERATURE REVIEW & THEORETICAL FOUNDATIONS
@@ -1014,11 +1014,11 @@ The published results demonstrated that PSISR achieves a **+0.40 dB PSNR gain** 
 ---
 
 
-<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
+<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
 
 
 <p align="center">
-  <img src="assets/animations/neural_net.svg" width="100%" alt="Cascading UBCF PSISRNet Architecture Data Flow" />
+  <img src="asset/neural_net.svg" width="100%" alt="Cascading UBCF PSISRNet Architecture Data Flow" />
 </p>
 
 
@@ -1321,7 +1321,7 @@ $$\text{PSNR} = 10 \cdot \log_{10}\left( \frac{\text{MAX}_I^2}{\text{MSE}_Y} \ri
 ---
 
 
-<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
+<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
 # 6. MULTISPECTRAL SEMANTIC LAND COVER SEGMENTATION (GEOSEG U-NET)
@@ -1492,7 +1492,7 @@ A $\kappa > 0.80$ denotes near-perfect agreement in remote sensing classificatio
 ---
 
 
-<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
+<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
 
 
 # 7. OBJECT-ORIENTED PROGRAMMING (OOP) PARADIGMS IN THE C++ NATIVE ENGINE
@@ -1869,7 +1869,7 @@ Benchmark executed on an 8-core CPU processing a 13-band Sentinel-2 scene ($5120
 ---
 
 
-<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
+<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
 
 
 # 8. DATASETS, BENCHMARKS & EMPIRICAL AUDITING
@@ -1993,11 +1993,11 @@ To verify the training dynamics and loss stability of our implementation on loca
 ---
 
 
-<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
+<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
 <p align="center">
-  <img src="assets/animations/tech_stack.svg" width="100%" alt="Full-Stack System Architecture: React UI, FastAPI Backend & PyTorch Core" />
+  <img src="asset/tech_stack.svg" width="100%" alt="Full-Stack System Architecture: React UI, FastAPI Backend & PyTorch Core" />
 </p>
 
 
@@ -2274,7 +2274,7 @@ curl -X POST http://localhost:8000/api/cpp-engine/run
 ---
 
 
-<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
+<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
 
 
 # 10. FRONTEND UI/UX ARCHITECTURE & COMPONENT SYSTEM
@@ -2449,11 +2449,11 @@ A centerpiece of the user experience is the custom-built **3D Earth Globe** loca
 ---
 
 
-<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
+<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
 
 
 <p align="center">
-  <img src="assets/animations/terminal.svg" width="100%" alt="Interactive Command Line Terminal - Step-by-Step Reproduction" />
+  <img src="asset/terminal.svg" width="100%" alt="Interactive Command Line Terminal - Step-by-Step Reproduction" />
 </p>
 
 
@@ -2723,7 +2723,7 @@ Now navigating to `http://localhost:8000/` serves the complete React web applica
 ---
 
 
-<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
+<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
 # 12. COMPREHENSIVE REPOSITORY DIRECTORY STRUCTURE & FILE MAP
@@ -2876,7 +2876,7 @@ GEOSEG/
 ---
 
 
-<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
+<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
 
 
 # 13. PROJECT EXHIBITION ORAL DEFENSE & EVALUATOR Q&A GUIDE
@@ -3025,7 +3025,7 @@ Below are the 25 most rigorous technical questions evaluators and judges typical
 ---
 
 
-<p align="center"><img src="assets/animations/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
+<p align="center"><img src="asset/wave_purple.svg" width="100%" alt="Purple Wave Divider" /></p>
 
 
 # 14. ENVIRONMENTAL ACCOUNTING, ENGINEERING ETHICS & FUTURE ROADMAP
@@ -3092,7 +3092,7 @@ The development of GeoSeg is organized across five distinct evolutionary phases:
 ---
 
 
-<p align="center"><img src="assets/animations/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
+<p align="center"><img src="asset/wave_green.svg" width="100%" alt="Green Wave Divider" /></p>
 
 
 # 15. ACADEMIC CITATIONS & OFFICIAL REFERENCES
@@ -3171,7 +3171,7 @@ SOFTWARE.
 ---
 
 
-<p align="center"><img src="assets/animations/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
+<p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Cyan Wave Divider" /></p>
 
 
 # APPENDIX A: THE COMPLETE 30-SCENE AERIAL IMAGE DATASET (AID) MONOGRAPHS
