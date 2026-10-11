@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" width="900" height="320">
+  <defs>
+    <linearGradient id="infobg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#030712"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="cyan-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="purple-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="green-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#84cc16"/>
+    </linearGradient>
+    <linearGradient id="amber-glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="card-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Container -->
+  <rect width="900" height="320" rx="16" fill="url(#infobg)" stroke="#334155" stroke-width="1.2"/>
+
+  <!-- Top Title Banner -->
+  <g transform="translate(30, 24)">
+    <text x="0" y="16" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="16" font-weight="800" fill="#f8fafc" letter-spacing="1">
+      🎯 EMPIRICAL AI BENCHMARKS &amp; TRAINING AUDIT
+    </text>
+    <text x="0" y="34" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="11" fill="#94a3b8">
+      NVIDIA GeForce RTX 5050 (8GB VRAM) • PyTorch 2.11.0+cu128 • FP16 Mixed Precision (AMP)
+    </text>
+  </g>
+
+  <!-- 4 Infographic Cards -->
+  <!-- CARD 1: PSISRNet -->
+  <g transform="translate(30, 75)">
+    <rect width="195" height="220" rx="12" fill="#0b1120" stroke="#0ea5e9" stroke-width="1.2"/>
+    <rect x="0" y="0" width="195" height="34" rx="12" fill="#0369a1" opacity="0.3"/>
+    <text x="14" y="22" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="12" font-weight="800" fill="#38bdf8">PSISRNet (8× SR)</text>
+    <circle cx="175" cy="18" r="4" fill="#38bdf8">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Stat 1: PSNR -->
+    <text x="14" y="58" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#64748b">PEAK PSNR / SSIM</text>
+    <text x="14" y="80" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="20" font-weight="900" fill="#38bdf8">38.47 dB</text>
+    <text x="14" y="96" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" font-weight="700" fill="#7dd3fc">SSIM: 0.9592</text>
+    
+    <!-- Mini Metric Grid -->
+    <line x1="14" y1="108" x2="181" y2="108" stroke="#1e293b"/>
+    <text x="14" y="126" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Epochs: <tspan font-weight="700" fill="#f8fafc">100 / 100</tspan></text>
+    <text x="14" y="144" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">2× PSNR: <tspan font-weight="700" fill="#38bdf8">26.44 dB</tspan></text>
+    <text x="14" y="162" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">4× PSNR: <tspan font-weight="700" fill="#38bdf8">24.10 dB</tspan></text>
+    <text x="14" y="180" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">8× PSNR: <tspan font-weight="700" fill="#38bdf8">22.93 dB</tspan></text>
+    <text x="14" y="198" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Params: <tspan font-weight="700" fill="#f8fafc">22.91 M</tspan></text>
+  </g>
+
+  <!-- CARD 2: ColNet -->
+  <g transform="translate(245, 75)">
+    <rect width="195" height="220" rx="12" fill="#0b1120" stroke="#a855f7" stroke-width="1.2"/>
+    <rect x="0" y="0" width="195" height="34" rx="12" fill="#7e22ce" opacity="0.3"/>
+    <text x="14" y="22" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="12" font-weight="800" fill="#c084fc">ColNet (Multi-Task)</text>
+    <circle cx="175" cy="18" r="4" fill="#c084fc">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Stat 1: Val Loss -->
+    <text x="14" y="58" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#64748b">BEST VAL LOSS</text>
+    <text x="14" y="80" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="20" font-weight="900" fill="#c084fc">4.0788</text>
+    <text x="14" y="96" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" font-weight="700" fill="#d8b4fe">Joint SR + 30-Cls Seg</text>
+
+    <!-- Mini Metric Grid -->
+    <line x1="14" y1="108" x2="181" y2="108" stroke="#1e293b"/>
+    <text x="14" y="126" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Epochs: <tspan font-weight="700" fill="#f8fafc">50 / 50 Full</tspan></text>
+    <text x="14" y="144" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Speed: <tspan font-weight="700" fill="#a3e635">1.1 s / epoch</tspan></text>
+    <text x="14" y="162" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Total Time: <tspan font-weight="700" fill="#f8fafc">1m 18s</tspan></text>
+    <text x="14" y="180" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Fusion: <tspan font-weight="700" fill="#c084fc">CTAF Module</tspan></text>
+    <text x="14" y="198" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Params: <tspan font-weight="700" fill="#f8fafc">2.14 M</tspan></text>
+  </g>
+
+  <!-- CARD 3: UNetFormer -->
+  <g transform="translate(460, 75)">
+    <rect width="195" height="220" rx="12" fill="#0b1120" stroke="#10b981" stroke-width="1.2"/>
+    <rect x="0" y="0" width="195" height="34" rx="12" fill="#047857" opacity="0.3"/>
+    <text x="14" y="22" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="12" font-weight="800" fill="#34d399">UNetFormer (ViT)</text>
+    <circle cx="175" cy="18" r="4" fill="#34d399">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2s" begin="1.0s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Stat 1: Val Loss -->
+    <text x="14" y="58" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#64748b">BEST VAL LOSS</text>
+    <text x="14" y="80" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="20" font-weight="900" fill="#34d399">3.4062</text>
+    <text x="14" y="96" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" font-weight="700" fill="#6ee7b7">ISPRS 2022 GLTB</text>
+
+    <!-- Mini Metric Grid -->
+    <line x1="14" y1="108" x2="181" y2="108" stroke="#1e293b"/>
+    <text x="14" y="126" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Epochs: <tspan font-weight="700" fill="#f8fafc">16 (Patience stop)</tspan></text>
+    <text x="14" y="144" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Speed: <tspan font-weight="700" fill="#a3e635">2.4 s / epoch</tspan></text>
+    <text x="14" y="162" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Total Time: <tspan font-weight="700" fill="#f8fafc">0m 50s</tspan></text>
+    <text x="14" y="180" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Attention: <tspan font-weight="700" fill="#34d399">GLTA Mechanism</tspan></text>
+    <text x="14" y="198" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Params: <tspan font-weight="700" fill="#f8fafc">5.29 M</tspan></text>
+  </g>
+
+  <!-- CARD 4: FarSeg -->
+  <g transform="translate(675, 75)">
+    <rect width="195" height="220" rx="12" fill="#0b1120" stroke="#f59e0b" stroke-width="1.2"/>
+    <rect x="0" y="0" width="195" height="34" rx="12" fill="#b45309" opacity="0.3"/>
+    <text x="14" y="22" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="12" font-weight="800" fill="#fbbf24">FarSeg (Relation)</text>
+    <circle cx="175" cy="18" r="4" fill="#fbbf24">
+      <animate attributeName="opacity" values="1;0.2;1" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Stat 1: Val Loss -->
+    <text x="14" y="58" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#64748b">BEST VAL LOSS</text>
+    <text x="14" y="80" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="20" font-weight="900" fill="#fbbf24">3.4040</text>
+    <text x="14" y="96" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" font-weight="700" fill="#fde68a">CVPR / TPAMI FSRM</text>
+
+    <!-- Mini Metric Grid -->
+    <line x1="14" y1="108" x2="181" y2="108" stroke="#1e293b"/>
+    <text x="14" y="126" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Epochs: <tspan font-weight="700" fill="#f8fafc">16 (Patience stop)</tspan></text>
+    <text x="14" y="144" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Speed: <tspan font-weight="700" fill="#a3e635">2.0 s / epoch</tspan></text>
+    <text x="14" y="162" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Total Time: <tspan font-weight="700" fill="#f8fafc">0m 35s</tspan></text>
+    <text x="14" y="180" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Feature: <tspan font-weight="700" fill="#fbbf24">Scene Relation</tspan></text>
+    <text x="14" y="198" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="10" fill="#94a3b8">Params: <tspan font-weight="700" fill="#f8fafc">5.00 M</tspan></text>
+  </g>
+</svg>
