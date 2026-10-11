@@ -95,6 +95,27 @@ python scripts/benchmark_advanced_methods.py
 
 ---
 
+## 🌐 Interactive Web Platform & Exhibition Features
+
+The GeoSeg web dashboard provides a full end-to-end interactive interface for running inference, exploring super-resolution, and exporting GIS-ready land cover maps:
+
+* **🛰️ Interactive AOI Selector (`/projects` / Map View)**:
+  - Search any global location or draw custom bounding boxes over Google Satellite, ISRO Bhuvan, or Esri World Imagery layers.
+  - One-click Sentinel-2 composite export: dynamically harvests real optical satellite imagery, synthesizes 13-band radiometric data, and generates pixel-level land cover classifications with automatic redirection to the results viewer.
+* **🗺️ Historical Segmented Raster Archive (`/results` / My Maps)**:
+  - Interactive split-slider comparison between real optical satellite imagery (RGB) and segmented classified GeoTIFFs (10m GSD).
+  - Accurate spatial area distribution charts computed per-pixel for Water Bodies, Barren Soil, Forest & Canopy, Urban Built-up, Croplands, and Wetlands.
+  - Direct **Download GeoTIFF** button preserving native Coordinate Reference Systems (`EPSG:32643` / `EPSG:4326`) and Affine Transforms for direct loading in QGIS or ArcGIS.
+* **⚡ Live Inference Pipeline (`/predict` / Run a prediction)**:
+  - Drag-and-drop support for multispectral `.tif`, `.tiff`, and optical `.png`/`.jpg` satellite scenes.
+  - Side-by-Side and Alpha-blended Overlay comparison modes with real-time opacity controls.
+  - Configurable sliding-window tile size (256/512/1024 px) and feathering overlap stride (0/32/64 px) with on-the-fly spectral index computation (NDVI, NDWI, NDBI).
+* **🔍 PSISR Super-Resolution Viewer (`/sr` / Super Resolution)**:
+  - Interactive slider demonstrating $1\times \rightarrow 4\times \rightarrow 8\times$ resolution enhancement across 30 real aerial scene categories (Airports, Harbors, Farmland, Coastal Deltas, Urban Corridors).
+  - Evaluated on real satellite acquisitions using 2D Haar Wavelet DWT decomposition and Correlation Filter feature extraction.
+
+---
+
 ## 📜 Citations
 
 ```bibtex

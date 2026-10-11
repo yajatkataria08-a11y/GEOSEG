@@ -1045,21 +1045,23 @@ frontend/
 ---
 
 ### 12.7 File: `frontend/src/pages/Inference.tsx`
-* **Purpose:** Tiled sliding-window inference interface.
+* **Purpose:** Tiled sliding-window inference and prediction analysis interface.
 * **Key Components:**
-  * Drag-and-drop GeoTIFF file uploader with file type validation.
-  * Inference settings: Checkpoint selector, tile size (256/512/1024), overlap stride (0/32/64px), spectral indices checkbox).
-  * Prediction viewer displaying classified rasters and land cover area distributions.
+  * Multi-format file uploader accepting multispectral `.tif`/`.tiff` and optical `.png`/`.jpg` satellite scenes.
+  * Inference settings: Checkpoint selector (ResNet-CF, ResNet-34 MS, DeepGlobe RGB, EuroSAT), tile size (256/512/1024), overlap stride (0/32/64px), and on-the-fly spectral index computation (`NDVI`, `NDWI`, `NDBI`).
+  * **Interactive Prediction Viewer:** Real input image and segmented land cover mask rendered with **Side-by-Side** and **Overlay** modes with dynamic opacity slider.
+  * **Direct GeoTIFF Export:** Immediate browser download preserving native geospatial CRS (`EPSG:32643`) and affine headers.
 
 ---
 
 ### 12.8 File: `frontend/src/components/Map/AOIMap.tsx`
-* **Purpose:** Interactive geospatial satellite selector map.
+* **Purpose:** Interactive geospatial satellite selector map and live tile harvester.
 * **Key Components:**
   * Leaflet map initialization with 4 base layers (Google Satellite, ISRO Bhuvan WMS, Esri World Imagery, OpenStreetMap).
   * Interactive drag-to-draw bounding box tool using Leaflet mousedown/mousemove/mouseup event listeners.
-  * Preset quick-select buttons for global landmarks (Bhopal Upper Lake, New Delhi, Kerala Wetlands, Sundarbans Mangroves, Amazon Rainforest, Tokyo Bay).
-  * AOI export trigger with distinct red/green status alerts.
+  * Preset quick-select buttons for global landmarks (Bhopal Upper Lake, Delhi NCR Corridor, Kerala Backwaters, Sundarbans Mangrove Reserve, Amazon Rainforest Basin, Tokyo Bay).
+  * **Dynamic Real Tile Harvesting:** Backend fetches live high-resolution satellite tiles, derives 13 Sentinel-2 bands via NIR proxy mathematics, generates land-cover masks and class distributions, and creates a classified GeoTIFF in `outputs/predictions/`.
+  * **Automated Result Navigation:** 2-second visual countdown redirects directly to the **Results** tab, auto-selecting the newly harvested AOI card for immediate inspection.
 
 ---
 
@@ -1073,10 +1075,21 @@ frontend/
 ---
 
 ### 12.10 File: `frontend/src/pages/Results.tsx`
-* **Purpose:** Segmented GeoTIFF archive.
+* **Purpose:** Historical segmented GeoTIFF raster archive and visual inspection viewer.
 * **Key Components:**
-  * Live queries `GET /api/results/` to list all processed prediction rasters.
-  * Displays file sizes, creation timestamps, and direct browser download links.
+  * Live queries `GET /api/results/` to list all processed prediction rasters sorted chronologically (latest exports first).
+  * **Interactive Split-Slider Map Viewer (`RasterMapViewer`):** Left side renders optical satellite imagery (RGB), right side renders the classified land cover GeoTIFF with corner-pinned indicator badges.
+  * **Per-Pixel Class Distribution:** Displays computed percentage distribution across 6 primary land classes (Water Bodies, Barren Soil, Forest & Canopy, Urban Built-up, Croplands, Wetlands).
+  * **Download GeoTIFF Action:** Direct browser download anchor fetching `/api/results/download/<filename>` for immediate spatial analysis in QGIS / ArcGIS.
+
+---
+
+### 12.11 File: `frontend/src/pages/SuperResolution.tsx`
+* **Purpose:** Progressive Super-Resolution (PSISRNet) interactive evaluation dashboard.
+* **Key Components:**
+  * Scene selector across 30 distinct Aerial Image Dataset (AID) categories with real high-resolution optical satellite tiles.
+  * Interactive 3-way resolution slider comparing Low-Resolution ($1\times$), Bicubic Interpolation, and Progressive Super-Resolution ($4\times$ and $8\times$ PSISR).
+  * Empirical telemetry displaying Peak PSNR (38.47 dB), SSIM (0.9592), and sub-millisecond inference latency on the NVIDIA RTX 5050 Laptop GPU.
 
 ---
 
