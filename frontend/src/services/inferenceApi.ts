@@ -58,7 +58,7 @@ export const inferenceApi = {
     return await fetchApi<InferenceJob>(`/inference/result/${jobId}`);
   },
 
-  async exportAOI(form: AOIExportForm): Promise<{ success: boolean; message: string; task_id?: string; is_synthetic?: boolean; isSynthetic?: boolean }> {
+  async exportAOI(form: AOIExportForm, locationName?: string): Promise<{ success: boolean; message: string; task_id?: string; result_id?: string; is_synthetic?: boolean; isSynthetic?: boolean }> {
     if (DEMO_MODE) {
       return {
         success: true,
@@ -77,9 +77,10 @@ export const inferenceApi = {
       endDate: form.endDate,
       maxCloudPct: form.maxCloudPct,
       scale: form.scale,
+      location_name: locationName || null,
     };
 
-    return await fetchApi<{ success: boolean; message: string; task_id?: string; is_synthetic?: boolean; isSynthetic?: boolean }>('/aoi/export', {
+    return await fetchApi<{ success: boolean; message: string; task_id?: string; result_id?: string; is_synthetic?: boolean; isSynthetic?: boolean }>('/aoi/export', {
       method: 'POST',
       body: JSON.stringify(payload),
     });

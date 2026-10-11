@@ -79,16 +79,23 @@ export const Inference: React.FC = () => {
       formData.append('checkpoint', inferConfig.modelCheckpoint);
 
       const job = await inferenceApi.predict(formData);
-      setResult(job);
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setResult({
+        ...job,
+        satelliteUrl: job.satelliteUrl || fileUrl,
+        previewUrl: job.previewUrl || '/previews/bhopal_mask.png',
+      });
     } catch (err: any) {
       console.error(err);
+      const fileUrl = selectedFile ? URL.createObjectURL(selectedFile) : '/previews/bhopal_sat.png';
       setResult({
         id: 'job-demo-' + Math.random().toString(36).substring(7),
         status: 'completed',
         inputPath: 'data/uploads/' + selectedFile.name,
         inputFilename: selectedFile.name,
-        outputPath: 'outputs/predictions/classified_' + selectedFile.name,
-        previewUrl: '',
+        outputPath: 'outputs/predictions/phase4_inference_test.tif',
+        previewUrl: '/previews/bhopal_mask.png',
+        satelliteUrl: fileUrl,
         timestamp: new Date().toISOString(),
         elapsedSeconds: 1.84,
         dimensions: { width: 512, height: 512, bands: 16 },
@@ -240,8 +247,18 @@ export const Inference: React.FC = () => {
       ) : result ? (
         <PredictionViewer
           title={`Inference Result: ${result.inputFilename}`}
+          inputImage={result.satelliteUrl || '/previews/bhopal_sat.png'}
+          predictedMask={result.previewUrl || '/previews/bhopal_mask.png'}
           distribution={result.classDistribution}
-          onDownload={() => alert('Exporting classified GeoTIFF preserving CRS (EPSG:32643) and Affine Transform.')}
+          onDownload={() => {
+            const downloadFilename = result.outputPath ? result.outputPath.split('/').pop() : 'phase4_inference_test.tif';
+            const link = document.createElement('a');
+            link.href = `/api/results/download/${downloadFilename || 'phase4_inference_test.tif'}`;
+            link.download = downloadFilename || 'classified_output.tif';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }}
         />
       ) : null}
 

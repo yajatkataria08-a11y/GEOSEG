@@ -1,10 +1,14 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { AOIMap } from '../components/Map/AOIMap';
 import { pageVariants } from '../utils/animations';
 import { MapPin } from 'lucide-react';
 
-export const MapView: React.FC = () => {
+interface MapViewProps {
+  setActiveTab?: (tab: string, resultId?: string) => void;
+}
+
+export const MapView: React.FC<MapViewProps> = ({ setActiveTab }) => {
   return (
     <motion.div
       variants={pageVariants}
@@ -26,7 +30,7 @@ export const MapView: React.FC = () => {
         </p>
       </div>
 
-      <AOIMap />
+      <AOIMap onNavigate={setActiveTab} />
     </motion.div>
   );
 };

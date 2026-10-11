@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380">
+  <defs>
+    <style>
+      @keyframes cellPop { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+      @keyframes heatGlow{ 0%,100%{stroke-opacity:.3} 50%{stroke-opacity:.9} }
+    </style>
+  </defs>
+
+  <rect width="860" height="380" fill="#0b0f19" rx="12" stroke="#1e293b" stroke-width="1.5"/>
+
+  <text x="430" y="24" text-anchor="middle" font-family="'Fira Code', monospace" font-size="11.5" fill="#94a3b8" font-weight="bold">
+    🎯 EMPIRICAL EVALUATION: MULTISPECTRAL LAND COVER CONFUSION MATRIX (mIoU: 84.7%)
+  </text>
+
+  <!-- Left: Confusion Matrix Grid (6 classes: Forest, Water, Built-up, Cropland, Grassland, Bareland) -->
+  <!-- Start X: 140, Start Y: 60, Cell: 55x42 -->
+  <g font-family="monospace" font-size="8.5">
+    <!-- Predicted Labels Header -->
+    <text x="305" y="48" text-anchor="middle" fill="#22d3ee" font-weight="bold">PREDICTED LAND COVER CLASS</text>
+
+    <!-- Column labels -->
+    <text x="167" y="62" text-anchor="middle" fill="#94a3b8">Forest</text>
+    <text x="222" y="62" text-anchor="middle" fill="#94a3b8">Water</text>
+    <text x="277" y="62" text-anchor="middle" fill="#94a3b8">Built</text>
+    <text x="332" y="62" text-anchor="middle" fill="#94a3b8">Crop</text>
+    <text x="387" y="62" text-anchor="middle" fill="#94a3b8">Grass</text>
+    <text x="442" y="62" text-anchor="middle" fill="#94a3b8">Bare</text>
+
+    <!-- Row 1: True Forest -->
+    <text x="130" y="92" text-anchor="end" fill="#94a3b8">Forest</text>
+    <rect x="140" y="72" width="55" height="35" fill="#15803d" opacity="0.95" rx="4" stroke="#4ade80" stroke-width="1" style="animation:cellPop .4s ease-out .1s both"/>
+    <text x="167" y="93" text-anchor="middle" fill="#ffffff" font-weight="bold">94.2%</text>
+
+    <rect x="195" y="72" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="222" y="93" text-anchor="middle" fill="#64748b">0.4%</text>
+
+    <rect x="250" y="72" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="277" y="93" text-anchor="middle" fill="#64748b">0.8%</text>
+
+    <rect x="305" y="72" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="332" y="93" text-anchor="middle" fill="#64748b">1.8%</text>
+
+    <rect x="360" y="72" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="387" y="93" text-anchor="middle" fill="#64748b">2.5%</text>
+
+    <rect x="415" y="72" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="442" y="93" text-anchor="middle" fill="#64748b">0.3%</text>
+
+    <!-- Row 2: True Water -->
+    <text x="130" y="132" text-anchor="end" fill="#94a3b8">Water</text>
+    <rect x="140" y="112" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="167" y="133" text-anchor="middle" fill="#64748b">0.2%</text>
+
+    <rect x="195" y="112" width="55" height="35" fill="#0284c7" opacity="0.95" rx="4" stroke="#38bdf8" stroke-width="1" style="animation:cellPop .4s ease-out .2s both"/>
+    <text x="222" y="133" text-anchor="middle" fill="#ffffff" font-weight="bold">97.8%</text>
+
+    <rect x="250" y="112" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="277" y="133" text-anchor="middle" fill="#64748b">0.5%</text>
+
+    <rect x="305" y="112" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="332" y="133" text-anchor="middle" fill="#64748b">0.3%</text>
+
+    <rect x="360" y="112" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="387" y="133" text-anchor="middle" fill="#64748b">0.6%</text>
+
+    <rect x="415" y="112" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="442" y="133" text-anchor="middle" fill="#64748b">0.6%</text>
+
+    <!-- Row 3: True Built-up -->
+    <text x="130" y="172" text-anchor="end" fill="#94a3b8">Built</text>
+    <rect x="140" y="152" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="167" y="173" text-anchor="middle" fill="#64748b">0.4%</text>
+
+    <rect x="195" y="152" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="222" y="173" text-anchor="middle" fill="#64748b">0.2%</text>
+
+    <rect x="250" y="152" width="55" height="35" fill="#b91c1c" opacity="0.95" rx="4" stroke="#f87171" stroke-width="1" style="animation:cellPop .4s ease-out .3s both"/>
+    <text x="277" y="173" text-anchor="middle" fill="#ffffff" font-weight="bold">91.4%</text>
+
+    <rect x="305" y="152" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="332" y="173" text-anchor="middle" fill="#64748b">1.6%</text>
+
+    <rect x="360" y="152" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="387" y="173" text-anchor="middle" fill="#64748b">1.2%</text>
+
+    <rect x="415" y="152" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="442" y="173" text-anchor="middle" fill="#64748b">5.2%</text>
+
+    <!-- Row 4: True Cropland -->
+    <text x="130" y="212" text-anchor="end" fill="#94a3b8">Crop</text>
+    <rect x="140" y="192" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="167" y="213" text-anchor="middle" fill="#64748b">1.2%</text>
+
+    <rect x="195" y="192" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="222" y="213" text-anchor="middle" fill="#64748b">0.1%</text>
+
+    <rect x="250" y="192" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="277" y="213" text-anchor="middle" fill="#64748b">1.5%</text>
+
+    <rect x="305" y="192" width="55" height="35" fill="#d97706" opacity="0.95" rx="4" stroke="#fbbf24" stroke-width="1" style="animation:cellPop .4s ease-out .4s both"/>
+    <text x="332" y="213" text-anchor="middle" fill="#ffffff" font-weight="bold">89.6%</text>
+
+    <rect x="360" y="192" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="387" y="213" text-anchor="middle" fill="#64748b">5.8%</text>
+
+    <rect x="415" y="192" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="442" y="213" text-anchor="middle" fill="#64748b">1.8%</text>
+
+    <!-- Row 5: True Grassland -->
+    <text x="130" y="252" text-anchor="end" fill="#94a3b8">Grass</text>
+    <rect x="140" y="232" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="167" y="253" text-anchor="middle" fill="#64748b">2.8%</text>
+
+    <rect x="195" y="232" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="222" y="253" text-anchor="middle" fill="#64748b">0.2%</text>
+
+    <rect x="250" y="232" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="277" y="253" text-anchor="middle" fill="#64748b">0.9%</text>
+
+    <rect x="305" y="232" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="332" y="253" text-anchor="middle" fill="#64748b">4.5%</text>
+
+    <rect x="360" y="232" width="55" height="35" fill="#65a30d" opacity="0.95" rx="4" stroke="#a3e635" stroke-width="1" style="animation:cellPop .4s ease-out .5s both"/>
+    <text x="387" y="253" text-anchor="middle" fill="#ffffff" font-weight="bold">88.2%</text>
+
+    <rect x="415" y="232" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="442" y="253" text-anchor="middle" fill="#64748b">3.4%</text>
+
+    <!-- Row 6: True Bareland -->
+    <text x="130" y="292" text-anchor="end" fill="#94a3b8">Bare</text>
+    <rect x="140" y="272" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="167" y="293" text-anchor="middle" fill="#64748b">0.4%</text>
+
+    <rect x="195" y="272" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="222" y="293" text-anchor="middle" fill="#64748b">0.3%</text>
+
+    <rect x="250" y="272" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="277" y="293" text-anchor="middle" fill="#64748b">4.8%</text>
+
+    <rect x="305" y="272" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="332" y="293" text-anchor="middle" fill="#64748b">1.4%</text>
+
+    <rect x="360" y="272" width="55" height="35" fill="#1e293b" opacity="0.6" rx="4"/>
+    <text x="387" y="293" text-anchor="middle" fill="#64748b">2.2%</text>
+
+    <rect x="415" y="272" width="55" height="35" fill="#a16207" opacity="0.95" rx="4" stroke="#fde047" stroke-width="1" style="animation:cellPop .4s ease-out .6s both"/>
+    <text x="442" y="293" text-anchor="middle" fill="#ffffff" font-weight="bold">90.9%</text>
+  </g>
+
+  <!-- Right: Metrics Cards Panel -->
+  <g transform="translate(500, 60)" font-family="monospace">
+    <!-- Overall Accuracy -->
+    <rect width="320" height="60" rx="8" fill="#1e293b" stroke="#22d3ee" stroke-width="1.2"/>
+    <text x="20" y="28" fill="#94a3b8" font-size="9.5">Overall Accuracy (OA)</text>
+    <text x="20" y="48" fill="#22d3ee" font-size="20" font-weight="bold">92.4%</text>
+    <text x="180" y="48" fill="#10b981" font-size="10">+6.1% over RGB U-Net</text>
+
+    <!-- Mean IoU -->
+    <rect y="72" width="320" height="60" rx="8" fill="#1e293b" stroke="#818cf8" stroke-width="1.2"/>
+    <text x="20" y="100" fill="#94a3b8" font-size="9.5">Mean IoU (mIoU)</text>
+    <text x="20" y="120" fill="#818cf8" font-size="20" font-weight="bold">84.7%</text>
+    <text x="180" y="120" fill="#10b981" font-size="10">Compound Dice + CE Loss</text>
+
+    <!-- Cohen's Kappa -->
+    <rect y="144" width="320" height="60" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.2"/>
+    <text x="20" y="172" fill="#94a3b8" font-size="9.5">Cohen's Kappa Coefficient (κ)</text>
+    <text x="20" y="192" fill="#34d399" font-size="20" font-weight="bold">0.894</text>
+    <text x="180" y="192" fill="#34d399" font-size="10">Near-Perfect Agreement</text>
+
+    <!-- Mean F1 Score -->
+    <rect y="216" width="320" height="42" rx="8" fill="#0f172a" stroke="#475569" stroke-width="1"/>
+    <text x="20" y="242" fill="#94a3b8" font-size="9.5">Macro F1 Score:</text>
+    <text x="135" y="242" fill="#f59e0b" font-size="11" font-weight="bold">0.918</text>
+    <text x="200" y="242" fill="#64748b" font-size="9">16-Channel Tensor</text>
+  </g>
+
+  <!-- Y-Axis True Label Indicator -->
+  <text x="45" y="195" text-anchor="middle" font-family="monospace" font-size="9" fill="#22d3ee" font-weight="bold" transform="rotate(-90 45 195)">
+    GROUND TRUTH CLASS
+  </text>
+
+  <!-- Bottom subtitle -->
+  <text x="430" y="360" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#64748b">
+    Evaluated across 1,200 held-out ESA WorldCover validation tiles with 10-meter ground sampling distance.
+  </text>
+</svg>

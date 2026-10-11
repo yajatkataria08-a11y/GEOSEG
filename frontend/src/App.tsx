@@ -23,11 +23,25 @@ export const App: React.FC = () => {
     return 'home';
   });
 
-  const handleTabChange = (tab: string) => {
+  const [selectedResultId, setSelectedResultId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('resultId');
+    }
+    return null;
+  });
+
+  const handleTabChange = (tab: string, resultId?: string) => {
     setActiveTab(tab);
+    if (resultId) {
+      setSelectedResultId(resultId);
+    }
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('tab', tab);
+      if (resultId) {
+        url.searchParams.set('resultId', resultId);
+      }
       window.history.replaceState(null, '', url.toString());
     }
   };
@@ -37,6 +51,8 @@ export const App: React.FC = () => {
       const params = new URLSearchParams(window.location.search);
       const tabParam = params.get('tab') || 'home';
       setActiveTab(tabParam);
+      const resParam = params.get('resultId');
+      if (resParam) setSelectedResultId(resParam);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -48,7 +64,7 @@ export const App: React.FC = () => {
         return <Home setActiveTab={handleTabChange} key="home" />;
       case 'projects':
       case 'map':
-        return <MapView key="projects" />;
+        return <MapView setActiveTab={handleTabChange} key="projects" />;
       case 'models':
       case 'training':
         return <Training key="models" />;
@@ -56,7 +72,7 @@ export const App: React.FC = () => {
       case 'inference':
         return <Inference key="predict" />;
       case 'results':
-        return <Results key="results" />;
+        return <Results initialSelectedId={selectedResultId} key="results" />;
       case 'sr':
       case 'super-resolution':
       case 'psisr':

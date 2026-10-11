@@ -97,6 +97,7 @@ class InferenceResult(BaseModel):
     output_path: Optional[str] = None
     class_distribution: Optional[Dict[str, float]] = None
     preview_url: Optional[str] = None
+    satellite_url: Optional[str] = None
     timestamp: datetime
     elapsed_seconds: float = 0.0
 
@@ -136,6 +137,7 @@ class AOIExportRequest(BaseModel):
     end_date: str = Field("2025-06-01", description="End date (YYYY-MM-DD)")
     max_cloud_pct: int = Field(10, description="Max cloud cover percentage")
     scale: int = Field(10, description="Resolution in meters")
+    location_name: Optional[str] = Field(None, description="Human-readable location name for Results tab")
 
 
 class AOIExportResponse(BaseModel):
@@ -143,6 +145,7 @@ class AOIExportResponse(BaseModel):
     success: bool
     message: str
     task_id: Optional[str] = None
+    result_id: Optional[str] = None
     is_synthetic: bool = False
 
 

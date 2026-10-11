@@ -96,7 +96,11 @@ export const aoiPresets: AOIPreset[] = [
 
 export type MapProviderId = 'google' | 'bhuvan' | 'esri' | 'osm' | 'ndvi';
 
-export const AOIMap: React.FC = () => {
+interface AOIMapProps {
+  onNavigate?: (tab: string, resultId?: string) => void;
+}
+
+export const AOIMap: React.FC<AOIMapProps> = ({ onNavigate }) => {
   const [selectedPreset, setSelectedPreset] = useState<AOIPreset>(aoiPresets[0]);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeLayer, setActiveLayer] = useState<MapProviderId>('google');
@@ -113,6 +117,8 @@ export const AOIMap: React.FC = () => {
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [exportError, setExportError] = useState<string | null>(null);
   const [isSynthetic, setIsSynthetic] = useState<boolean>(false);
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+  const [lastResultId, setLastResultId] = useState<string | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [cursorCoords, setCursorCoords] = useState<{ lat: number; lng: number } | null>({ lat: 23.25, lng: 77.375 });
   const [isScanning, setIsScanning] = useState<boolean>(false);
@@ -376,10 +382,33 @@ export const AOIMap: React.FC = () => {
     setExportMessage(null);
     setExportError(null);
     setIsSynthetic(false);
+    setRedirectCountdown(null);
     try {
-      const res = await inferenceApi.exportAOI(exportForm);
+      const res = await inferenceApi.exportAOI(exportForm, selectedPreset.name);
       setExportMessage(res.message);
       setIsSynthetic(Boolean(res.isSynthetic || res.is_synthetic || res.message?.includes('[SYNTHETIC]')));
+      
+      const resultId = res.result_id || res.task_id || undefined;
+      if (resultId) {
+        setLastResultId(resultId);
+      }
+
+      // Automatically switch to Results / Map Report view
+      let secondsLeft = 2;
+      setRedirectCountdown(secondsLeft);
+      const interval = setInterval(() => {
+        secondsLeft -= 1;
+        if (secondsLeft <= 0) {
+          clearInterval(interval);
+          if (onNavigate) {
+            onNavigate('results', resultId);
+          } else {
+            window.location.search = '?tab=results';
+          }
+        } else {
+          setRedirectCountdown(secondsLeft);
+        }
+      }, 1000);
     } catch (e: any) {
       setExportError(e.message || 'Connecting to Earth Engine backend failed');
     } finally {
@@ -555,17 +584,38 @@ export const AOIMap: React.FC = () => {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-2xl border backdrop-blur-xl flex flex-col gap-1.5 ${
+              className={`p-4 rounded-2xl border backdrop-blur-xl flex flex-col gap-2.5 ${
                 isSynthetic
                   ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
                   : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
               }`}
             >
-              <div className="flex items-center gap-2 font-bold text-xs">
-                {isSynthetic ? <span>⚠️ Simulated Earth Engine Mode</span> : <CheckCircle2 size={16} />}
-                <span>{isSynthetic ? 'Synthetic AOI Ready' : 'Task Queued'}</span>
+              <div className="flex items-center justify-between font-bold text-xs">
+                <div className="flex items-center gap-2">
+                  {isSynthetic ? <span>⚠️ Simulated Earth Engine Mode</span> : <CheckCircle2 size={16} />}
+                  <span>{isSynthetic ? 'Synthetic AOI Ready' : 'Real Satellite Imagery Harvested'}</span>
+                </div>
+                {redirectCountdown !== null && (
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-mono animate-pulse">
+                    Opening Report in {redirectCountdown}s...
+                  </span>
+                )}
               </div>
               <p className="text-xs opacity-90 leading-relaxed">{exportMessage}</p>
+
+              <button
+                onClick={() => {
+                  if (onNavigate) {
+                    onNavigate('results', lastResultId || undefined);
+                  } else {
+                    window.location.search = lastResultId ? `?tab=results&resultId=${lastResultId}` : '?tab=results';
+                  }
+                }}
+                className="mt-1 w-full py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-cyan-500/20"
+              >
+                <span>View Land Cover Report Now</span>
+                <span>→</span>
+              </button>
             </motion.div>
           )}
 

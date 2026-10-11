@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 310">
+  <defs>
+    <style>
+      @keyframes prog1 { from{width:0} to{width:505px} }
+      @keyframes prog2 { from{width:0} to{width:565px} }
+      @keyframes prog3 { from{width:0} to{width:620px} }
+      @keyframes prog4 { from{width:0} to{width:571px} }
+      @keyframes prog5 { from{width:0} to{width:608px} }
+      @keyframes prog6 { from{width:0} to{width:620px} }
+      @keyframes prog7 { from{width:0} to{width:540px} }
+      @keyframes prog8 { from{width:0} to{width:600px} }
+      @keyframes prog9 { from{width:0} to{width:615px} }
+      @keyframes pulseGlow { 0%,100%{filter:drop-shadow(0 0 4px #22d3ee)} 50%{filter:drop-shadow(0 0 10px #22d3ee)} }
+    </style>
+  </defs>
+
+  <rect width="860" height="310" fill="#0f172a" rx="12"/>
+  <text x="430" y="24" text-anchor="middle" font-family="monospace" font-size="11" fill="#94a3b8" font-weight="bold">
+    ⚡ QUANTITATIVE BENCHMARK MATRIX — MULTI-METRIC PERFORMANCE AUDIT
+  </text>
+
+  <!-- Metric 1: PSNR @ 2x -->
+  <text x="30" y="52" font-family="monospace" font-size="10" fill="#64748b" font-weight="bold">PSNR (dB) @ 2×</text>
+
+  <rect x="150" y="40" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="40" width="0"   height="15" rx="7.5" fill="#3b82f6" style="animation:prog1 1.2s ease-out .2s forwards"/>
+  <text x="158" y="52" font-family="monospace" font-size="8.5" fill="#ffffff">Bicubic: 31.42 dB</text>
+  <text x="785" y="52" font-family="monospace" font-size="9" fill="#3b82f6">31.42</text>
+
+  <rect x="150" y="60" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="60" width="0"   height="15" rx="7.5" fill="#818cf8" style="animation:prog2 1.2s ease-out .4s forwards"/>
+  <text x="158" y="72" font-family="monospace" font-size="8.5" fill="#ffffff">RCAN: 35.12 dB</text>
+  <text x="785" y="72" font-family="monospace" font-size="9" fill="#818cf8">35.12</text>
+
+  <rect x="150" y="80" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="80" width="0"   height="15" rx="7.5" fill="#22d3ee" style="animation:prog3 1.5s ease-out .6s forwards;animation:pulseGlow 2.5s infinite"/>
+  <text x="158" y="92" font-family="monospace" font-size="8.5" fill="#042f2e" font-weight="bold">PSISRNet (Ours): 38.47 dB  ★ SOTA (+3.02 dB)</text>
+  <text x="785" y="92" font-family="monospace" font-size="9.5" fill="#22d3ee" font-weight="bold">38.47</text>
+
+  <!-- Metric 2: SSIM @ 2x -->
+  <text x="30" y="130" font-family="monospace" font-size="10" fill="#64748b" font-weight="bold">SSIM @ 2×</text>
+
+  <rect x="150" y="118" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="118" width="0"   height="15" rx="7.5" fill="#3b82f6" style="animation:prog4 1.2s ease-out .8s forwards"/>
+  <text x="158" y="130" font-family="monospace" font-size="8.5" fill="#ffffff">Bicubic: 0.8841</text>
+  <text x="785" y="130" font-family="monospace" font-size="9" fill="#3b82f6">0.8841</text>
+
+  <rect x="150" y="138" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="138" width="0"   height="15" rx="7.5" fill="#818cf8" style="animation:prog5 1.2s ease-out 1.0s forwards"/>
+  <text x="158" y="150" font-family="monospace" font-size="8.5" fill="#ffffff">RCAN: 0.9415</text>
+  <text x="785" y="150" font-family="monospace" font-size="9" fill="#818cf8">0.9415</text>
+
+  <rect x="150" y="158" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="158" width="0"   height="15" rx="7.5" fill="#34d399" style="animation:prog6 1.5s ease-out 1.2s forwards;animation:pulseGlow 2.5s infinite"/>
+  <text x="158" y="170" font-family="monospace" font-size="8.5" fill="#022c22" font-weight="bold">PSISRNet (Ours): 0.9592  ★ SOTA (+0.0177)</text>
+  <text x="785" y="170" font-family="monospace" font-size="9.5" fill="#34d399" font-weight="bold">0.9592</text>
+
+  <!-- Metric 3: Correlation % -->
+  <text x="30" y="208" font-family="monospace" font-size="10" fill="#64748b" font-weight="bold">Pearson Corr. %</text>
+
+  <rect x="150" y="196" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="196" width="0"   height="15" rx="7.5" fill="#3b82f6" style="animation:prog7 1.2s ease-out 1.4s forwards"/>
+  <text x="158" y="208" font-family="monospace" font-size="8.5" fill="#ffffff">Bicubic: 87.20%</text>
+  <text x="785" y="208" font-family="monospace" font-size="9" fill="#3b82f6">87.20%</text>
+
+  <rect x="150" y="216" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="216" width="0"   height="15" rx="7.5" fill="#f59e0b" style="animation:prog8 1.2s ease-out 1.6s forwards"/>
+  <text x="158" y="228" font-family="monospace" font-size="8.5" fill="#ffffff">RCAN: 96.70%</text>
+  <text x="785" y="228" font-family="monospace" font-size="9" fill="#f59e0b">96.70%</text>
+
+  <rect x="150" y="236" width="620" height="15" rx="7.5" fill="#1e293b"/>
+  <rect x="150" y="236" width="0"   height="15" rx="7.5" fill="#f472b6" style="animation:prog9 1.5s ease-out 1.8s forwards;animation:pulseGlow 2.5s infinite"/>
+  <text x="158" y="248" font-family="monospace" font-size="8.5" fill="#4a044e" font-weight="bold">PSISRNet (Ours): 99.25%  ★ High Precision</text>
+  <text x="785" y="248" font-family="monospace" font-size="9.5" fill="#f472b6" font-weight="bold">99.25%</text>
+
+  <!-- Legend -->
+  <g font-family="monospace" font-size="8.5" fill="#64748b">
+    <rect x="150" y="278" width="14" height="10" rx="3" fill="#3b82f6"/>
+    <text x="170" y="287">Baseline Method</text>
+    <rect x="310" y="278" width="14" height="10" rx="3" fill="#818cf8"/>
+    <text x="330" y="287">Prior SOTA (RCAN)</text>
+    <rect x="490" y="278" width="14" height="10" rx="3" fill="#22d3ee"/>
+    <text x="510" y="287" fill="#22d3ee" font-weight="bold">★ Proposed PSISRNet (Sharma et al. 2025)</text>
+  </g>
+</svg>

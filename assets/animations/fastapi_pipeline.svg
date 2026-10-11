@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 300">
+  <defs>
+    <style>
+      @keyframes reqFlow { 0%{stroke-dashoffset:60} 100%{stroke-dashoffset:0} }
+      @keyframes queuePulse{ 0%,100%{stroke-opacity:.3} 50%{stroke-opacity:1} }
+    </style>
+    <marker id="reqArr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3z" fill="#22d3ee"/></marker>
+    <linearGradient id="fastGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e293b"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+  </defs>
+
+  <rect width="860" height="300" fill="#0b0f19" rx="12" stroke="#1e293b" stroke-width="1.5"/>
+
+  <text x="430" y="24" text-anchor="middle" font-family="'Fira Code', monospace" font-size="11.5" fill="#94a3b8" font-weight="bold">
+    ⚡ FASTAPI ASYNC INFERENCE LIFECYCLE: REQUEST VALIDATION &amp; TENSOR THREADPOOL
+  </text>
+
+  <!-- Step 1: Client Request -->
+  <g transform="translate(30, 50)" font-family="monospace">
+    <rect width="160" height="190" rx="8" fill="url(#fastGrad)" stroke="#38bdf8" stroke-width="1.2"/>
+    <text x="80" y="25" text-anchor="middle" fill="#38bdf8" font-size="9.5" font-weight="bold">1. Client Request</text>
+    <text x="80" y="42" text-anchor="middle" fill="#94a3b8" font-size="7.5">POST /api/sr/upscale</text>
+
+    <!-- JSON Payload graphic -->
+    <rect x="15" y="55" width="130" height="95" rx="4" fill="#090d16" stroke="#1e293b"/>
+    <text x="22" y="72" fill="#a78bfa" font-size="7">{"image_b64": "..."</text>
+    <text x="22" y="86" fill="#a78bfa" font-size="7"> "scale": 8,</text>
+    <text x="22" y="100" fill="#a78bfa" font-size="7"> "checkpoint": "..."</text>
+    <text x="22" y="114" fill="#a78bfa" font-size="7"> "apply_filter": true}</text>
+
+    <text x="80" y="172" text-anchor="middle" fill="#22d3ee" font-size="7.5">Async Non-Blocking</text>
+  </g>
+
+  <!-- Flow 1 -> 2 -->
+  <line x1="190" y1="145" x2="225" y2="145" stroke="#22d3ee" stroke-width="2" marker-end="url(#reqArr)" stroke-dasharray="6,3" style="animation:reqFlow 1s linear infinite"/>
+
+  <!-- Step 2: Pydantic Validation & Security Sandbox -->
+  <g transform="translate(225, 50)" font-family="monospace">
+    <rect width="180" height="190" rx="8" fill="url(#fastGrad)" stroke="#818cf8" stroke-width="1.2"/>
+    <text x="90" y="25" text-anchor="middle" fill="#c4b5fd" font-size="9.5" font-weight="bold">2. Security Gate</text>
+    <text x="90" y="42" text-anchor="middle" fill="#94a3b8" font-size="7.5">Pydantic v2 Ingestion</text>
+
+    <rect x="15" y="55" width="150" height="95" rx="4" fill="#1e1b4b" stroke="#312e81"/>
+    <text x="25" y="75" fill="#e0e7ff" font-size="7.5">✓ Scale ∈ [2, 4, 8]</text>
+    <text x="25" y="92" fill="#e0e7ff" font-size="7.5">✓ Safe Path Checkpoint</text>
+    <text x="25" y="109" fill="#e0e7ff" font-size="7.5">✓ Whitelist traversal</text>
+    <text x="25" y="126" fill="#e0e7ff" font-size="7.5">✓ Base64 magic bytes</text>
+
+    <text x="90" y="172" text-anchor="middle" fill="#10b981" font-size="7.5" font-weight="bold">Passed Security Invariant</text>
+  </g>
+
+  <!-- Flow 2 -> 3 -->
+  <line x1="405" y1="145" x2="440" y2="145" stroke="#22d3ee" stroke-width="2" marker-end="url(#reqArr)" stroke-dasharray="6,3" style="animation:reqFlow 1s linear infinite;animation-delay:.3s"/>
+
+  <!-- Step 3: ThreadPool PyTorch Engine -->
+  <g transform="translate(440, 50)" font-family="monospace">
+    <rect width="200" height="190" rx="8" fill="url(#fastGrad)" stroke="#34d399" stroke-width="1.4" style="animation:queuePulse 2.5s infinite"/>
+    <text x="100" y="25" text-anchor="middle" fill="#6ee7b7" font-size="9.5" font-weight="bold">3. PyTorch ThreadPool</text>
+    <text x="100" y="42" text-anchor="middle" fill="#94a3b8" font-size="7.5">asyncio.to_thread(infer)</text>
+
+    <rect x="15" y="55" width="170" height="95" rx="4" fill="#052e16" stroke="#047857"/>
+    <text x="25" y="75" fill="#a7f3d0" font-size="7.5">PSISRNet.forward()</text>
+    <text x="25" y="92" fill="#a7f3d0" font-size="7.5">torch.no_grad() AMP</text>
+    <text x="25" y="109" fill="#a7f3d0" font-size="7.5">Execution: ~42ms</text>
+    <text x="25" y="126" fill="#facc15" font-size="7.5">Output: [3, 512, 512]</text>
+
+    <text x="100" y="172" text-anchor="middle" fill="#34d399" font-size="7.5" font-weight="bold">Zero Event-Loop Stalls</text>
+  </g>
+
+  <!-- Flow 3 -> 4 -->
+  <line x1="640" y1="145" x2="675" y2="145" stroke="#22d3ee" stroke-width="2" marker-end="url(#reqArr)" stroke-dasharray="6,3" style="animation:reqFlow 1s linear infinite;animation-delay:.6s"/>
+
+  <!-- Step 4: JSON Response -->
+  <g transform="translate(675, 50)" font-family="monospace">
+    <rect width="155" height="190" rx="8" fill="url(#fastGrad)" stroke="#f59e0b" stroke-width="1.2"/>
+    <text x="77" y="25" text-anchor="middle" fill="#fbbf24" font-size="9.5" font-weight="bold">4. JSON Response</text>
+    <text x="77" y="42" text-anchor="middle" fill="#94a3b8" font-size="7.5">HTTP 200 OK</text>
+
+    <rect x="15" y="55" width="125" height="95" rx="4" fill="#1c1917" stroke="#44403c"/>
+    <text x="22" y="75" fill="#fde68a" font-size="7">{"sr_image_b64"</text>
+    <text x="22" y="92" fill="#fde68a" font-size="7"> "psnr_2x": 38.47,</text>
+    <text x="22" y="109" fill="#fde68a" font-size="7"> "ssim_2x": 0.959,</text>
+    <text x="22" y="126" fill="#fde68a" font-size="7"> "time_ms": 42.1}</text>
+
+    <text x="77" y="172" text-anchor="middle" fill="#f59e0b" font-size="7.5">Ready for Browser Render</text>
+  </g>
+
+  <!-- Bottom subtitle -->
+  <text x="430" y="275" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#64748b">
+    Asynchronous concurrency pattern: FastAPI handles concurrent HTTP requests on the main loop while GPU tensor math runs in worker threads.
+  </text>
+</svg>

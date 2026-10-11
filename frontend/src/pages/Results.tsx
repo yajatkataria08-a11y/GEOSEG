@@ -20,7 +20,11 @@ interface ResultSummary {
   classes?: { name: string; color: string; pct: number }[];
 }
 
-export const Results: React.FC = () => {
+interface ResultsProps {
+  initialSelectedId?: string | null;
+}
+
+export const Results: React.FC<ResultsProps> = ({ initialSelectedId }) => {
   const [results, setResults] = useState<ResultSummary[]>([
     {
       id: 'phase4_inference_test',
@@ -33,12 +37,11 @@ export const Results: React.FC = () => {
       previewUrl: '/previews/bhopal_mask.png',
       satelliteUrl: '/previews/bhopal_sat.png',
       classes: [
-        { name: 'Water Bodies', color: '#0284c7', pct: 88.1 },
-        { name: 'Wetlands', color: '#06b6d4', pct: 8.3 },
-        { name: 'Shrubland', color: '#84cc16', pct: 2.8 },
-        { name: 'Urban Built-up', color: '#ef4444', pct: 0.3 },
-        { name: 'Forest & Canopy', color: '#10b981', pct: 0.2 },
-        { name: 'Barren Soil', color: '#f59e0b', pct: 0.1 },
+        { name: 'Water Bodies', color: '#0284c7', pct: 64.5 },
+        { name: 'Barren Soil', color: '#f59e0b', pct: 18.3 },
+        { name: 'Forest & Canopy', color: '#10b981', pct: 12.2 },
+        { name: 'Urban Built-up', color: '#ef4444', pct: 4.6 },
+        { name: 'Wetlands', color: '#06b6d4', pct: 0.5 },
       ],
     },
     {
@@ -118,12 +121,17 @@ export const Results: React.FC = () => {
             ],
           }));
           setResults(mapped);
-          setSelectedMap(mapped[0]);
+          if (initialSelectedId) {
+            const found = mapped.find((m: any) => m.id === initialSelectedId);
+            setSelectedMap(found || mapped[0]);
+          } else {
+            setSelectedMap(mapped[0]);
+          }
         }
       } catch (err: any) {}
     }
     loadResults();
-  }, []);
+  }, [initialSelectedId]);
 
   const formatBytes = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -228,7 +236,14 @@ export const Results: React.FC = () => {
               variant="accent"
               size="md"
               icon={<Download size={16} />}
-              onClick={() => alert(`Downloading ${selectedMap.filename} preserving CRS (EPSG:32643)`)}
+              onClick={() => {
+                const link = document.createElement('a');
+                link.href = `/api/results/download/${selectedMap.filename}`;
+                link.download = selectedMap.filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }}
             >
               Download GeoTIFF
             </Button>

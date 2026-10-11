@@ -71,3 +71,7 @@ desktop.ini
 *.log
 wandb/
 .pytest_cache/
+
+GEOSEG-main/
+*.whl
+

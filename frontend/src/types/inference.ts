@@ -22,6 +22,7 @@ export interface InferenceJob {
   inputFilename: string;
   outputPath?: string;
   previewUrl?: string;
+  satelliteUrl?: string;
   classDistribution?: Record<string, number>;
   timestamp: string;
   elapsedSeconds: number;

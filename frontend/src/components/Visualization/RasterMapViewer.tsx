@@ -272,6 +272,20 @@ export const RasterMapViewer: React.FC<RasterMapViewerProps> = ({
           />
         </div>
 
+        {/* Pinned Viewport Corner Labels in Split Mode */}
+        {viewMode === 'split' && (
+          <>
+            <div className="absolute top-4 left-4 z-20 px-3 py-1.5 rounded-xl bg-black/85 border border-white/20 text-xs font-bold text-slate-200 uppercase tracking-wider backdrop-blur-md shadow-xl pointer-events-none flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span>Left: Optical Satellite (RGB)</span>
+            </div>
+            <div className="absolute top-4 right-4 z-20 px-3 py-1.5 rounded-xl bg-cyan-950/90 border border-cyan-400/40 text-xs font-bold text-cyan-300 uppercase tracking-wider backdrop-blur-md shadow-xl pointer-events-none flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span>Right: Classified GeoTIFF (10m)</span>
+            </div>
+          </>
+        )}
+
         {/* Interactive Split Divider Line with Draggable Center Handle */}
         {viewMode === 'split' && (
           <div
@@ -289,14 +303,6 @@ export const RasterMapViewer: React.FC<RasterMapViewerProps> = ({
               }`}
             >
               <SplitSquareVertical size={16} />
-            </div>
-
-            {/* Split Mode Labels */}
-            <div className="absolute top-3 -left-36 px-2.5 py-1 rounded-md bg-black/85 border border-white/20 text-[10px] font-bold text-slate-200 uppercase tracking-wider backdrop-blur-md shadow-lg pointer-events-none">
-              Optical Satellite (RGB)
-            </div>
-            <div className="absolute top-3 left-4 px-2.5 py-1 rounded-md bg-black/85 border border-cyan-400/40 text-[10px] font-bold text-cyan-300 uppercase tracking-wider backdrop-blur-md shadow-lg pointer-events-none">
-              Classified GeoTIFF (10m)
             </div>
           </div>
         )}

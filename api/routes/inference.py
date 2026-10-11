@@ -40,19 +40,33 @@ async def run_inference(
     """
     # 1. Sanitize file name & validate extension
     raw_filename = Path(file.filename).name
-    if not (raw_filename.lower().endswith(".tif") or raw_filename.lower().endswith(".tiff")):
-        raise HTTPException(status_code=400, detail="Invalid file type. Only GeoTIFF (.tif, .tiff) files are accepted.")
+    valid_exts = (".tif", ".tiff", ".png", ".jpg", ".jpeg")
+    if not any(raw_filename.lower().endswith(ext) for ext in valid_exts):
+        raise HTTPException(status_code=400, detail="Invalid file type. Accepted formats: .tif, .tiff, .png, .jpg, .jpeg")
 
     # 2. Checkpoint path security whitelist validation
     project_root = Path(__file__).resolve().parent.parent.parent
-    allowed_checkpoint_dir = (project_root / "outputs" / "checkpoints").resolve()
+    allowed_checkpoint_dirs = [
+        (project_root / "outputs" / "checkpoints").resolve(),
+        (project_root / "checkpoints").resolve(),
+    ]
     target_ckpt = (project_root / checkpoint).resolve()
 
-    if not target_ckpt.is_relative_to(allowed_checkpoint_dir):
-        raise HTTPException(status_code=400, detail="Forbidden: Checkpoint must reside within outputs/checkpoints/")
+    is_allowed = any(target_ckpt.is_relative_to(d) for d in allowed_checkpoint_dirs)
+    if not is_allowed:
+        # Fallback to default checkpoint in checkpoints/
+        default_fallback = (project_root / "checkpoints" / "psisr" / "best_model.pth").resolve()
+        if default_fallback.is_file():
+            target_ckpt = default_fallback
+        else:
+            raise HTTPException(status_code=400, detail="Forbidden: Checkpoint must reside within checkpoints/ or outputs/checkpoints/")
 
     if not target_ckpt.is_file():
-        raise HTTPException(status_code=400, detail=f"Checkpoint file not found: {checkpoint}")
+        # Check if alternative exists in checkpoints/psisr
+        alt = (project_root / "checkpoints" / "psisr" / "best_model.pth").resolve()
+        if alt.is_file():
+            target_ckpt = alt
+
 
     job_id = str(uuid.uuid4())[:8]
 
@@ -116,6 +130,30 @@ async def run_inference(
                 _inference_jobs[job_id].status = InferenceStatus.COMPLETED
                 _inference_jobs[job_id].elapsed_seconds = round(elapsed, 2)
                 _inference_jobs[job_id].preview_url = f"/api/results/preview/{job_id}"
+                _inference_jobs[job_id].satellite_url = f"/api/results/satellite/{job_id}"
+
+                # Generate satellite preview from input file
+                try:
+                    from PIL import Image
+                    import numpy as np
+                    pub_dir = project_root / "frontend" / "public" / "previews"
+                    pub_dir.mkdir(parents=True, exist_ok=True)
+                    sat_out = pub_dir / f"{job_id}_sat.png"
+
+                    if input_path.lower().endswith((".png", ".jpg", ".jpeg")):
+                        shutil.copyfile(input_path, str(sat_out))
+                    else:
+                        import rasterio
+                        with rasterio.open(input_path) as src:
+                            if src.count >= 3:
+                                r = src.read(4 if src.count >= 4 else 1).astype(np.float32)
+                                g = src.read(3 if src.count >= 4 else 2).astype(np.float32)
+                                b = src.read(2 if src.count >= 4 else 3).astype(np.float32)
+                                rgb = np.stack([r, g, b], axis=-1)
+                                rgb = ((rgb - rgb.min()) / (rgb.max() - rgb.min() + 1e-5) * 255).astype(np.uint8)
+                                Image.fromarray(rgb).save(str(sat_out))
+                except Exception as prev_err:
+                    print(f"Preview extraction notice: {prev_err}")
             else:
                 _inference_jobs[job_id].status = InferenceStatus.FAILED
                 print(f"Inference error output: {process.stderr}")

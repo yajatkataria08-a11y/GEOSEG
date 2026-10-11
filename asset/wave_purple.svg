@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 50">
+  <defs>
+    <linearGradient id="gPurp" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#818cf8" stop-opacity="0"/>
+      <stop offset="30%"  stop-color="#818cf8" stop-opacity="0.8"/>
+      <stop offset="70%"  stop-color="#ec4899" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </linearGradient>
+    <style>
+      @keyframes waveP1 {
+        0%,100% { d: path("M0,25 C140,8 290,42 430,25 C570,8 720,42 860,25"); }
+        50%     { d: path("M0,25 C140,42 290,8 430,25 C570,42 720,8 860,25"); }
+      }
+      @keyframes waveP2 {
+        0%,100% { d: path("M0,25 C200,38 360,12 510,25 C660,38 760,12 860,25"); }
+        50%     { d: path("M0,25 C200,12 360,38 510,25 C660,12 760,38 860,25"); }
+      }
+    </style>
+  </defs>
+  <rect width="860" height="50" fill="transparent"/>
+  <path d="M0,25 C140,8 290,42 430,25 C570,8 720,42 860,25" fill="none" stroke="url(#gPurp)" stroke-width="2.5" stroke-linecap="round" style="animation:waveP1 4.5s ease-in-out infinite"/>
+  <path d="M0,25 C200,38 360,12 510,25 C660,38 760,12 860,25" fill="none" stroke="url(#gPurp)" stroke-width="1.2" stroke-linecap="round" opacity="0.5" style="animation:waveP2 5.5s ease-in-out infinite"/>
+</svg>

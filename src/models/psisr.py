@@ -50,97 +50,120 @@ class UBCFBlock(nn.Module):
     Interleaves standard 3x3 convolution and dilated convolution (dilation=2)
     with LeakyReLU activations to expand the receptive field without blind spots,
     followed by the Correlation Filter module.
+
+    Skip connection: channel-wise concatenation followed by 1x1 projection (Section 3.1).
+    This is the exact formulation in the paper: the main branch and residual features
+    are concatenated (doubled channels) then projected back to out_channels, preventing
+    any feature loss from element-wise addition when channels differ.
     """
-    def __init__(self, in_channels: int, out_channels: int, dilation: int = 2):
+    def __init__(self, in_channels: int, out_channels: int, dilation: int = 2, use_bn: bool = True):
         super().__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(out_channels)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, kernel_size=3, padding=1, bias=not use_bn)
+        self.bn1 = nn.BatchNorm2d(out_channels) if use_bn else nn.Identity()
         self.lrelu = nn.LeakyReLU(negative_slope=0.2, inplace=True)
         
         # Dilated convolution for linear receptive field expansion without resolution loss
         self.dilated_conv = nn.Conv2d(
-            out_channels, out_channels, kernel_size=3, padding=dilation, dilation=dilation, bias=False
+            out_channels, out_channels, kernel_size=3, padding=dilation, dilation=dilation, bias=not use_bn
         )
-        self.bn2 = nn.BatchNorm2d(out_channels)
+        self.bn2 = nn.BatchNorm2d(out_channels) if use_bn else nn.Identity()
         
         # Embedded Correlation Filter
         self.cf = CorrelationFilterModule(out_channels, kernel_size=5)
         
-        # Channel projection if in_channels != out_channels
-        self.shortcut = nn.Identity()
+        # Shortcut projection to match out_channels (for channel-wise concat below)
+        self.shortcut_proj = nn.Identity()
         if in_channels != out_channels:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=False),
-                nn.BatchNorm2d(out_channels)
-            )
+            sc_layers = [nn.Conv2d(in_channels, out_channels, kernel_size=1, bias=not use_bn)]
+            if use_bn:
+                sc_layers.append(nn.BatchNorm2d(out_channels))
+            self.shortcut_proj = nn.Sequential(*sc_layers)
+        
+        # 1x1 fusion conv after channel-wise concatenation (out_channels * 2 -> out_channels)
+        # Section 3.1: "channel-wise concatenation" of main branch + residual
+        self.fusion_conv = nn.Sequential(
+            nn.Conv2d(out_channels * 2, out_channels, kernel_size=1, bias=not use_bn),
+            nn.BatchNorm2d(out_channels) if use_bn else nn.Identity(),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        residual = self.shortcut(x)
+        residual = self.shortcut_proj(x)
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.lrelu(out)
         out = self.dilated_conv(out)
         out = self.bn2(out)
         out = self.cf(out)
-        return self.lrelu(out + residual)
+        # Channel-wise concatenation then 1x1 projection (Section 3.1)
+        out = self.fusion_conv(torch.cat([out, residual], dim=1))
+        return self.lrelu(out)
 
 
 class PSISRNet(nn.Module):
     """
     Progressive Satellite Image Super-Resolution Network (PSISR).
     Complete 3-Stage Cascading Architecture (Table 2 & Figure 2 in paper).
-    - Stage 1 (UB1): 512 filters -> Deconvolution 2x magnification
-    - Stage 2 (UB2): 256 filters -> Deconvolution 4x magnification
-    - Stage 3 (UB3): 128 filters -> Sub-pixel convolution 8x magnification
+    - Stage 1 (UB1): 512 filters (base) -> Deconvolution 2x magnification (No BN per Sec 3.2)
+    - Stage 2 (UB2): 256 filters (base) -> Deconvolution 4x magnification (With BN per Sec 3.2)
+    - Stage 3 (UB3): 128 filters (base) -> Sub-pixel convolution 8x magnification (With BN per Sec 3.2)
     """
-    def __init__(self, in_channels: int = 3, out_channels: int = 3, base_filters: int = 64):
+    def __init__(self, in_channels: int = 3, out_channels: int = 3, base_filters: int = 128):
         super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
+        self.base_filters = base_filters
         
-        # Initial feature extraction layer (Input size: 24x24)
+        # Initial feature extraction layer (Input size: 24x24 or 64x64)
+        # entry_conv outputs base_filters*2 to feed into UB1 (which widens to base_filters*4)
         self.entry_conv = nn.Sequential(
             nn.Conv2d(in_channels, base_filters * 2, kernel_size=3, padding=1),
             nn.LeakyReLU(0.2, inplace=True)
         )
         
         # --- Stage 1: UB1 Module (2x magnification) ---
+        # Table 2: 512 filters (base_filters*4 when base_filters=128)
+        # Section 3.2 specifies UB1 uses Conv + LeakyReLU WITHOUT BN
         self.ub1_blocks = nn.Sequential(
-            UBCFBlock(base_filters * 2, 256),
-            UBCFBlock(256, 256),
-            UBCFBlock(256, 256)
+            UBCFBlock(base_filters * 2, base_filters * 4, use_bn=False),
+            UBCFBlock(base_filters * 4, base_filters * 4, use_bn=False),
+            UBCFBlock(base_filters * 4, base_filters * 4, use_bn=False)
         )
         self.deconv_2x = nn.Sequential(
-            nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(base_filters * 4, base_filters * 2, kernel_size=4, stride=2, padding=1),
             nn.LeakyReLU(0.2, inplace=True)
         )
-        self.recon_2x = nn.Conv2d(128, out_channels, kernel_size=3, padding=1)
+        self.recon_2x = nn.Conv2d(base_filters * 2, out_channels, kernel_size=3, padding=1)
         
         # --- Stage 2: UB2 Module (4x magnification) ---
+        # Table 2: 256 filters (base_filters*2 when base_filters=128)
+        # Section 3.2 specifies UB2 uses Conv + BatchNorm + LeakyReLU
         self.ub2_blocks = nn.Sequential(
-            UBCFBlock(128, 128),
-            UBCFBlock(128, 128),
-            UBCFBlock(128, 128)
+            UBCFBlock(base_filters * 2, base_filters * 2, use_bn=True),
+            UBCFBlock(base_filters * 2, base_filters * 2, use_bn=True),
+            UBCFBlock(base_filters * 2, base_filters * 2, use_bn=True)
         )
         self.deconv_4x = nn.Sequential(
-            nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(base_filters * 2, base_filters, kernel_size=4, stride=2, padding=1),
             nn.LeakyReLU(0.2, inplace=True)
         )
-        self.recon_4x = nn.Conv2d(64, out_channels, kernel_size=3, padding=1)
+        self.recon_4x = nn.Conv2d(base_filters, out_channels, kernel_size=3, padding=1)
         
         # --- Stage 3: UB3 Module (8x magnification) ---
+        # Table 2: 128 filters (base_filters when base_filters=128)
+        # Section 3.2 specifies UB3 uses Conv + BatchNorm + LeakyReLU
         self.ub3_blocks = nn.Sequential(
-            UBCFBlock(64, 64),
-            UBCFBlock(64, 64),
-            UBCFBlock(64, 64)
+            UBCFBlock(base_filters, base_filters, use_bn=True),
+            UBCFBlock(base_filters, base_filters, use_bn=True),
+            UBCFBlock(base_filters, base_filters, use_bn=True)
         )
-        # Sub-pixel convolution layer (PixelShuffle) as specified in Section 3.2
+        # Sub-pixel convolution (PixelShuffle x2) as specified in Section 3.2
+        # base_filters -> base_filters*4 -> PixelShuffle(2) -> base_filters
         self.subpixel_8x = nn.Sequential(
-            nn.Conv2d(64, 64 * 4, kernel_size=3, padding=1),
+            nn.Conv2d(base_filters, base_filters * 4, kernel_size=3, padding=1),
             nn.PixelShuffle(upscale_factor=2),
             nn.LeakyReLU(0.2, inplace=True)
         )
-        self.recon_8x = nn.Conv2d(64, out_channels, kernel_size=3, padding=1)
+        self.recon_8x = nn.Conv2d(base_filters, out_channels, kernel_size=3, padding=1)
 
     def forward(self, x: torch.Tensor, scale: int = 8) -> Dict[str, torch.Tensor]:
         """
@@ -219,19 +242,44 @@ class CombinedLoss(nn.Module):
         return loss_cl, float(loss_mse.item()), float(ssim_val.item())
 
 
-def calculate_metrics(sr: torch.Tensor, hr: torch.Tensor) -> Dict[str, float]:
+def rgb_to_ycbcr_y(tensor: torch.Tensor) -> torch.Tensor:
     """
-    Computes exact quantitative metrics from paper:
-    - PSNR (Equation 9)
-    - SSIM (Equation 10)
-    - Pearson Correlation Efficiency (reported 99.25%)
+    Extract Y (luminance) channel in YCbCr color space (BT.601 standard)
+    as specified in Section 3.3 of Sharma et al. (2025).
+    Expects input tensor in [0, 1] range of shape (..., 3, H, W) or (3, H, W).
+    """
+    if tensor.dim() == 4 and tensor.shape[1] == 3:
+        r, g, b = tensor[:, 0:1, :, :], tensor[:, 1:2, :, :], tensor[:, 2:3, :, :]
+    elif tensor.dim() == 3 and tensor.shape[0] == 3:
+        r, g, b = tensor[0:1, :, :], tensor[1:2, :, :], tensor[2:3, :, :]
+    else:
+        return tensor
+    # ITU-R BT.601 conversion: Y = 16/255 + 65.481/255*R + 128.553/255*G + 24.966/255*B
+    y = (65.481 * r + 128.553 * g + 24.966 * b) / 255.0 + (16.0 / 255.0)
+    return y
+
+
+def calculate_metrics(sr: torch.Tensor, hr: torch.Tensor, use_y_channel: bool = True) -> Dict[str, float]:
+    """
+    Computes quantitative metrics from paper:
+    - PSNR (Equation 9) on Y channel of YCbCr (Section 3.3)
+    - SSIM (Equation 10) on Y channel of YCbCr (Section 3.3)
+    - Pearson Correlation Efficiency
     - FLOPs (Equation 11)
     - Efficiency Score (Equation 12)
     """
-    # Detach tensors for metric evaluation
     sr = sr.detach()
     hr = hr.detach()
-    mse = F.mse_loss(sr, hr).item()
+
+    # If use_y_channel is True, evaluate on Y channel per Section 3.3
+    if use_y_channel and ((sr.dim() == 3 and sr.shape[0] == 3) or (sr.dim() == 4 and sr.shape[1] == 3)):
+        sr_eval = rgb_to_ycbcr_y(sr)
+        hr_eval = rgb_to_ycbcr_y(hr)
+    else:
+        sr_eval = sr
+        hr_eval = hr
+
+    mse = F.mse_loss(sr_eval, hr_eval).item()
     if mse == 0:
         psnr = 100.0
     else:
@@ -239,11 +287,11 @@ def calculate_metrics(sr: torch.Tensor, hr: torch.Tensor) -> Dict[str, float]:
         
     # SSIM
     c1, c2 = 0.01 ** 2, 0.03 ** 2
-    mu1 = sr.mean().item()
-    mu2 = hr.mean().item()
-    sigma1 = sr.var().item()
-    sigma2 = hr.var().item()
-    cov = ((sr - mu1) * (hr - mu2)).mean().item()
+    mu1 = sr_eval.mean().item()
+    mu2 = hr_eval.mean().item()
+    sigma1 = sr_eval.var().item()
+    sigma2 = hr_eval.var().item()
+    cov = ((sr_eval - mu1) * (hr_eval - mu2)).mean().item()
     ssim = ((2 * mu1 * mu2 + c1) * (2 * cov + c2)) / ((mu1**2 + mu2**2 + c1) * (sigma1 + sigma2 + c2))
     ssim = max(0.0, min(1.0, ssim))
     
