@@ -137,6 +137,23 @@ The GeoSeg web dashboard provides a full end-to-end interactive interface for ru
   pages={196--214},
   year={2022}
 }
+
+@article{zheng2020farseg,
+  title={Foreground-Aware Relation Network for Geospatial Object Segmentation in High Spatial Resolution Remote Sensing Imagery},
+  author={Zheng, Zhuo and Zhong, Yanfei and Wang, Junjue and Ma, Ailong},
+  journal={IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  pages={4096--4105},
+  year={2020}
+}
+
+@article{colnet2023collaborative,
+  title={Collaborative Network for Super-Resolution and Semantic Segmentation of Remote Sensing Images},
+  author={Li, Xiang and Zhang, Lefei and Du, Bo and others},
+  journal={IEEE Transactions on Geoscience and Remote Sensing (TGRS)},
+  volume={61},
+  pages={1--14},
+  year={2023}
+}
 ```
 
 <p align="center"><img src="asset/wave_cyan.svg" width="100%" alt="Divider" /></p>
